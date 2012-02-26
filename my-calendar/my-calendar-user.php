@@ -13,7 +13,7 @@ function mc_user_profile() {
 						$name = $key;
 						$label = $value['label'];
 						$values = $value['values'];
-						
+						$form = "<input type='hidden' name='mc_users' value='1' />";
 						$form .= "
 						<tr>
 						<th scope='row'><label for='my_calendar_user_settings'>$label</label></th>
@@ -49,6 +49,8 @@ function mc_user_save_profile() {
 	if ( isset($_POST['user_id']) ) { 
 		$user_ID = (int) $_POST['user_id']; 
 	} 
-	update_user_meta($user_ID ,'my_calendar_user_settings' , $_POST['my_calendar_user_settings'] );
+	if ( isset( $_POST['mc_users'] ) ) {
+		update_user_meta($user_ID ,'my_calendar_user_settings' , $_POST['my_calendar_user_settings'] );
+	}
 }
 ?>

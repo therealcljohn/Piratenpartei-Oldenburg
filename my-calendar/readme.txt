@@ -4,14 +4,14 @@ Contributors: joedolson
 Donate link: http://www.joedolson.com/donate.php
 Tags: calendar, dates, times, events, scheduling, event manager
 Requires at least: 2.9.2
-Tested up to: 3.3-aortic-dissection
+Tested up to: 3.4-alpha
 Stable tag: trunk
 
 Accessible WordPress event calendar plugin. Show events from multiple calendars on pages, in posts, or in widgets.
 
 == Description ==
 
-My Calendar provides event management and provides numerous methods to display your events. The plug-in can support individual calendars within WordPress Multi-User, or multiple calendars displaying different categories of events. 
+My Calendar provides event management and numerous methods to display your events. The plug-in can support individual site calendars within WordPress Multi-User, or multiple calendars displayed by categories of or locations for events. 
 
 Basic Features:
 
@@ -33,15 +33,16 @@ Basic Features:
 *	Location Manager for storing frequently used venues
 *   Import method from Kieran O'Shea's Calendar plugin
 * 	Integrated Help file to guide in use of shortcodes and template tags
+* 	[User's Guide available for purchase](http://www.joedolson.com/articles/my-calendar/users-guide/) with extensive assistance in set up and use.
 
 This calendar branched from [Kieran O'Shea's Calendar plugin](http://wordpress.org/extend/plugins/calendar/) in April 2010. You can import any previous scheduled events from Kieran's calendar into My Calendar.
 
 Languages available:
 
 * American English (Default)
+* French (Frederic Escallier) - to 1.9.8
 * Dutch (Luud Heck) - to 1.8.9
 * Danish ([Jakob Smith](http://www.omkalfatring.dk/)) - to 1.8.9
-* French ([Manuel Lasnier](http://www.zef-creations.com)) - to 1.8.8
 * Japanese ([Daisuke Abe](http://www.alter-ego.jp/)) - to 1.8.5
 * Russian ([Alex](http://blog.sotvoril.ru/) - to 1.8.5
 * Turkish (Mehmet Ko&ccedil;ali) - to 1.8.4
@@ -51,12 +52,7 @@ Languages available:
 * Czech ([Jan Rybarik](http://janrybarik.cz)) - to 1.6.3
 * Brazilian Portuguese (Leonardo Kfoury) - to 1.6.0?
 
-Older translations
-
-* Spanish ([Esteban Truelsegaard](http://www.netmdp.com))
-* Finnish (Ilpo Puhakka)
-
-New or updated translations are always appreciated. The translation files are included in the download. 
+New or updated translations are always appreciated. The translation files are included in the download.
 
 == Installation ==
 
@@ -78,6 +74,137 @@ New or updated translations are always appreciated. The translation files are in
    with shortcode options or widget configuration.
 
 == Changelog ==
+
+= 1.10.10 =
+
+* Bug fix: Upcoming events list did not respect category limits.
+* Validation error/bug fix: Date for ID for first of month was incorrect.
+* Validation error: unencoded ampersand in iCal link if permalinks disabled.
+
+= 1.10.9 =
+
+* Added option to clear cache from settings.
+* Bug fix: Error in caching where cache returned false for multi-category limited calendars.
+* Bug fix: Error in caching where cache returned false for category limited calendars using category name as delimiter. Thanks to [Antti Palosaari](crope@iki.fi) for reporting this bug and for testing fixes.
+* Bug fix: Error notices if user is deleted who is assigned as host of some events. Thanks to Florian Edelmann for reporting this bug and contributing solution.
+* Bug fix: Upcoming events in dates mode returned null for cached dates.
+
+= 1.10.8 =
+
+* Bug fix: upcoming events list breaks if 'This is a multi-day event' is checked for an event with only a single occurrence. 
+* Bug fix: Upcoming events caching did not cache correct data.
+* Modification: eliminated some extraneous database calls
+* Modified: clarifying text edits
+* Added: category classes on calendar date cells
+
+= 1.10.7 =
+
+* Made 'to' value in Google Maps links a translatable value.
+* Feature change: iCal download now respects currently selected month. 
+* Added a phone number field to the Location manager
+* Added a setting to display only the core site's calendar on child sites in multisite mode.
+* Added a setting for the link target for mini calendar dates
+* Re-wrote labels for URL link target settings fields.
+* Bug fix: Location selector did not respect currently selected categories.
+* Bug fix: "Add another occurrence" option available in Edit mode, but not functional. Removed option.
+* Bug fix: Limiting by categories didn't trim whitespace from category names.
+* Bug fix: Fixed RSS/ICS/Print permalinks if PATHINFO permalinks are enabled.
+* Improved cache handling. Cache limit relative to amount of memory available to PHP. Cache stores information more efficiently.
+* Revised RSS/iCal handling to avoid .htaccess problems.
+
+= 1.10.6 =
+
+* Revised template tags so the description tags are run through wpautop(), and added _raw versions which are not.
+* Fixed a bug in URL generation so that URLs with ports are correctly constructed.
+* Fixed a bug iin Print output which did not allow restriction to multiple categories
+* Added option to use {date} in previous/next navigation links to indicate what date set is being navigated to.
+
+= 1.10.5 =
+
+* I made a truly bone-headed error in the last update, and I'm not even going to say what. If you didn't notice it, lucky for you! 
+
+= 1.10.4 =
+
+* In my rush to fix the security issue, I broke an aspect of the event navigation. Apologies for this! Now fixed.
+
+= 1.10.3 =
+
+* Incorrectly called wp_kses(). Apologies for the frequent updates!
+
+= 1.10.2 =
+
+* Critical security update. Please upgrade promptly. Big thank you to Dean Batha for the bug report.
+
+= 1.10.1 = 
+
+* Bug fix: undeclared array in widget manager
+* Renamed overly-generic constant.
+
+= 1.10.0 =
+
+* New feature: option to link dates in mini calendar to separate daily view instead of pop-up.
+* New feature: no longer necessary to manually edit behaviors in order to open main calendar event titles to separate page.
+* New feature: Ability to define grouped events as a single multi-day event and remove duplicates from events lists (upcoming events and today's events widgets)
+* New feature: group-association classes assigned to multi-day events in grid display.
+* New template tags: {daterange} and {multidate} for displaying a beginning and ending date range for a single event and for displaying each date in a multi-day event, respectively.
+* Week-view calendar caption now editable.
+* Added printable version.
+* Submit buttons in forms are now duplicated at top and bottom of long editing sections, to improve usability.
+* Minor style change to group editor to avoid group list colliding with editor textarea.
+* Removed angle brackets from Previous/Next events links.
+* Added custom action hooks for event save and event delete
+* Added ability to prevent today's events from showing up in upcoming events listings.
+* Added categories to iCal output.
+* iCal should return times in local time, not in UTC.
+* Bug fix: iCal output not correctly encoded
+* Bug fix: mc_next_link filter did not exist.
+* Bug fix: placed limit on maximum size of cached calendar data.
+* Bug fix: Upcoming events list will no longer occasionally display more items than expected.
+* Bug fix: menu icon not aware of custom content locations
+
+= 1.9.8 =
+
+* This is just a convenience update due to a warning appearing in 1.9.7 that I missed.
+
+= 1.9.7 =
+
+* Cache was not cleared when events were approved, rejected, or deleted.
+* Fixed bug with slashed characters in time and date formats
+* Fixed bug where previous/next links did not work on category pages
+* Fixed bug where event description was deleted if edited in groups manager.
+* Easydrag.js now respects conditional loading by page ID.
+* Small change to upcoming events list: events with an end time specifie and not crossing days will move off the list after they end rather than after they start.
+
+= 1.9.6 =
+
+* Fixed bug in Event Manager where information about whether an event was open for registration saved incorrectly.
+* Added raw details_link template tag.
+* Fixed Google Maps link error when using Long/Lat coordinates.
+* Associated image option was not available if HTML editor was enabled.
+
+= 1.9.5 =
+
+* Bug fix: Caching of Today's events did not account for category limits
+* Bug fix: Upcoming events listed by day duplication
+
+= 1.9.4 =
+
+* Bug fix: month-by-day recurring events in upcoming events list
+* Bug fix: duplication of events in upcoming events list
+* Bug fix: when editing a single event with indefinite recurrences, future events set up without continuing recurrence.
+* Function error when data not present fixed.
+* Added display of sending name/address for support messages
+
+= 1.9.3 =
+
+* Stylesheet saving can write longer files. Solves problem with occasional truncation of stylesheets.
+* Added transient caching for calendar events to improve performance, plus other various performance improvements
+* Small html output change.
+* 1.9.0 made details boxes draggable; made this optional.
+* Added plug-in support request form.
+* Added updated French translation to 1.9.2
+* Fixed bug with date switcher duplicating/skipping months.
+* Updated User's Guide (not included with plug-in)
 
 = 1.9.2 = 
 
@@ -633,5 +760,7 @@ I can! Just not in person. I've written a User's Guide for My Calendar, which yo
 
 == Upgrade Notice ==
 
-- Version 1.9.2 includes a set of bug fixes, but no major changes.
+- Version 1.10.10 Fixes miscellaneous bugs relating to caching and two validation errors.
+- Version 1.10.2 is a CRITICAL SECURITY UPGRADE. Please upgrade promptly.
+- Version 1.10.0 adds a printable view, multi-day events, and a few additional new options.
 - Version 1.9.0 incorporated many new event editing and management options and a refresh of My Calendar's styles and scripts. Some changes will require updated styles or scripts to work properly. Updated JavaScript and styles <em>will not be installed by default</em>, in order to avoid overwriting any custom changes, but you can update styles and scripts on their editing pages. 

@@ -1,5 +1,16 @@
 <?php 
 
+function mc_dateclass( $now, $current ) {
+	if ( date("Ymd",$now) == date("Ymd", $current ) ) {
+		$dateclass = 'current-day';
+	} else if ( my_calendar_date_comp( date('Y-m-d',$now), date('Y-m-d',$current) ) ) {
+		$dateclass = 'future-day day-with-date';
+	} else {
+		$dateclass = 'past-day day-with-date';
+	}
+	return $dateclass;
+}
+
 function my_calendar_add_date($givendate,$day=0,$mth=0,$yr=0) {
 	$cd = strtotime($givendate);
 	$newdate = date('Y-m-d', mktime(date('h',$cd),date('i',$cd), date('s',$cd), date('m',$cd)+$mth,date('d',$cd)+$day, date('Y',$cd)+$yr));

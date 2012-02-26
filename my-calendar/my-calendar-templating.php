@@ -90,6 +90,12 @@ function edit_mc_templates() {
 <dt><code>{endtime}</code></dt>
 <dd><?php _e('Time at which the event ends.','my-calendar'); ?></dd>
 
+<dt><code>{daterange}</code></dt>
+<dd><?php _e('Beginning date to end date; excludes end date if same as beginning.','my-calendar'); ?></dd>
+
+<dt><code>{multidate}</code></dt>
+<dd><?php _e('Multi-day events: an unordered list of dates/times. Otherwise, beginning date/time.','my-calendar'); ?></dd>
+
 <dt><code>{author}</code></dt>
 <dd><?php _e('Author who posted the event.','my-calendar'); ?></dd>
 
@@ -183,10 +189,10 @@ function edit_mc_templates() {
 	<input type="checkbox" id="mc_use_grid_template" name="mc_use_grid_template" value="1"  <?php jd_cal_checkCheckbox('mc_use_grid_template',1); ?>/> <label for="mc_use_grid_template"><?php _e('Use this grid event template','my-calendar'); ?></label>
 	</p>
 	<p>
-	<label for="mc_grid_template"><?php _e('Your custom template for events in the calendar grid output.','my-calendar'); ?></label><br /><textarea id="mc_grid_template" name="mc_grid_template" rows="12" cols="64"><?php echo $mc_grid_template; ?></textarea>
+	<label for="mc_grid_template"><?php _e('Your custom template for events in the calendar grid output.','my-calendar'); ?></label><br /><textarea id="mc_grid_template" name="mc_grid_template" class="template-editor" rows="12" cols="76"><?php echo $mc_grid_template; ?></textarea>
 	</p>
 	<p>
-		<input type="submit" name="save" class="button-primary" value="<?php _e('Save Grid Template','my-calendar'); ?> &raquo;" />
+		<input type="submit" name="save" class="button-primary" value="<?php _e('Save Grid Template','my-calendar'); ?>" />
 	</p>
 	</form>
 	</div>
@@ -203,10 +209,10 @@ function edit_mc_templates() {
 	<input type="checkbox" id="mc_use_list_template" name="mc_use_list_template" value="1"  <?php jd_cal_checkCheckbox('mc_use_list_template',1); ?>/> <label for="mc_use_list_template"><?php _e('Use this list event template','my-calendar'); ?></label>
 	</p>
 	<p>
-	<label for="mc_list_template"><?php _e('Your custom template for events in calendar list output.','my-calendar'); ?></label><br /><textarea id="mc_list_template" name="mc_list_template" rows="12" cols="64"><?php echo $mc_list_template; ?></textarea>
+	<label for="mc_list_template"><?php _e('Your custom template for events in calendar list output.','my-calendar'); ?></label><br /><textarea id="mc_list_template" name="mc_list_template" class="template-editor" rows="12" cols="76"><?php echo $mc_list_template; ?></textarea>
 	</p>
 	<p>
-		<input type="submit" name="save" class="button-primary" value="<?php _e('Save List Template','my-calendar'); ?> &raquo;" />
+		<input type="submit" name="save" class="button-primary" value="<?php _e('Save List Template','my-calendar'); ?>" />
 	</p>
 	</form>
 	</div>
@@ -223,10 +229,10 @@ function edit_mc_templates() {
 	<input type="checkbox" id="mc_use_mini_template" name="mc_use_mini_template" value="1"  <?php jd_cal_checkCheckbox('mc_use_mini_template',1); ?>/> <label for="mc_use_mini_template"><?php _e('Use this mini event template','my-calendar'); ?></label>
 	</p>
 	<p>
-	<label for="mc_mini_template"><?php _e('Your custom template for events in sidebar/mini calendar output.','my-calendar'); ?></label><br /><textarea id="mc_mini_template" name="mc_mini_template" rows="12" cols="64"><?php echo $mc_mini_template; ?></textarea>
+	<label for="mc_mini_template"><?php _e('Your custom template for events in sidebar/mini calendar output.','my-calendar'); ?></label><br /><textarea id="mc_mini_template" name="mc_mini_template" rows="12" cols="76" class="template-editor"><?php echo $mc_mini_template; ?></textarea>
 	</p>
 	<p>
-		<input type="submit" name="save" class="button-primary" value="<?php _e('Save Mini Template','my-calendar'); ?> &raquo;" />
+		<input type="submit" name="save" class="button-primary" value="<?php _e('Save Mini Template','my-calendar'); ?>" />
 	</p>
 	</form>
 	</div>
@@ -243,10 +249,10 @@ function edit_mc_templates() {
 	<input type="checkbox" id="mc_use_details_template" name="mc_use_details_template" value="1"  <?php jd_cal_checkCheckbox('mc_use_details_template',1); ?>/> <label for="mc_use_details_template"><?php _e('Use this details template','my-calendar'); ?></label>
 	</p>
 	<p>
-	<label for="mc_details_template"><?php _e('Your custom template for events on the event details page.','my-calendar'); ?></label><br /><textarea id="mc_details_template" name="mc_details_template" rows="12" cols="64"><?php echo $mc_details_template; ?></textarea>
+	<label for="mc_details_template"><?php _e('Your custom template for events on the event details page.','my-calendar'); ?></label><br /><textarea id="mc_details_template" name="mc_details_template" rows="12" cols="76" class="template-editor"><?php echo $mc_details_template; ?></textarea>
 	</p>
 	<p>
-		<input type="submit" name="save" class="button-primary" value="<?php _e('Save Details Template','my-calendar'); ?> &raquo;" />
+		<input type="submit" name="save" class="button-primary" value="<?php _e('Save Details Template','my-calendar'); ?>" />
 	</p>
 	</form>
 	</div>

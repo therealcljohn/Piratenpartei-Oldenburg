@@ -39,6 +39,7 @@ DTSTAMP:{ical_start}
 ORGANIZER;CN={host}:MAILTO:{host_email}
 DTSTART:{ical_start}
 DTEND:{ical_end}
+CATEGORIES:{category}
 URL;VALUE=URI:{link}
 DESCRIPTION;ENCODING=QUOTED-PRINTABLE:{ical_desc}
 END:VEVENT

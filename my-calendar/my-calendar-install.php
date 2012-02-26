@@ -126,7 +126,7 @@ $initial_minijs = 'jQuery(document).ready(function($) {
 });';
 
 $default_template = "<strong>{date}</strong> &#8211; {link_title}<br /><span>{time}, {category}</span>";
-
+$charset_collate = '';
 if ( ! empty($wpdb->charset) ) {
 	$charset_collate = "DEFAULT CHARACTER SET $wpdb->charset";
 }
@@ -167,8 +167,10 @@ $initial_db = "CREATE TABLE " . my_calendar_table() . " (
  event_longitude FLOAT(10,6) NOT NULL DEFAULT '0',
  event_latitude FLOAT(10,6) NOT NULL DEFAULT '0',
  event_zoom INT(2) NOT NULL DEFAULT '14',
+ event_phone VARCHAR(32) NOT NULL,
  event_group INT(1) NOT NULL DEFAULT '0',
  event_group_id INT(11) NOT NULL DEFAULT '0',
+ event_span INT(1) NOT NULL DEFAULT '0',
  event_approved INT(1) NOT NULL DEFAULT '1',
  event_flagged INT(1) NOT NULL DEFAULT '0',
  event_holiday INT(1) NOT NULL DEFAULT '$event_holiday',
@@ -201,6 +203,7 @@ $initial_loc_db = "CREATE TABLE " . my_calendar_locations_table() . " (
  location_longitude FLOAT(10,6) NOT NULL DEFAULT '0',
  location_latitude FLOAT(10,6) NOT NULL DEFAULT '0',
  location_zoom INT(2) NOT NULL DEFAULT '14',
+ location_phone VARCHAR(32) NOT NULL,
  PRIMARY KEY  (location_id) 
  ) $charset_collate;";
 
@@ -367,11 +370,16 @@ global $default_template, $initial_listjs, $initial_caljs, $initial_minijs, $ini
 	add_option('mc_css_file','refresh.css');
 	add_option('mc_show_rss','false');
 	add_option('mc_show_ical','false');	
+	add_option('mc_show_print','false');
 	add_option('mc_time_format',get_option('time_format'));
 	add_option( 'mc_widget_defaults',$defaults);
 	add_option( 'mc_show_weekends','true' );
 	add_option( 'mc_uri','' );	
 	add_option( 'mc_show_event_vcal','false' );
+	add_option( 'mc_draggable',0 );
+	add_option( 'mc_caching_enabled','true' );
+	add_option( 'mc_week_caption',"The week's events" );
+	add_option( 'mc_multisite_show', 0 );
 	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 	dbDelta($initial_db);
 	dbDelta($initial_cat_db);

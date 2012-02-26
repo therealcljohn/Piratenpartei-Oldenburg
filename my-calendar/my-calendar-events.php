@@ -4,6 +4,7 @@ function mc_get_all_events( $category ) {
 global $wpdb;
 	$select_category = ( $category!='default' )?mc_select_category($category,'all'):'';
 	$limit_string = mc_limit_string('all');
+	
 	if ($select_category != '' && $limit_string != '') {
 		$join = ' AND ';
 	} else if ($select_category == '' && $limit_string != '' ) {
@@ -12,23 +13,32 @@ global $wpdb;
 		$join = '';
 	}
 	$limits = $select_category . $join . $limit_string;
-    $events = $wpdb->get_results("SELECT *,event_begin as event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) $limits");
+    $events = $wpdb->get_results("SELECT *,event_begin as event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) $limits AND event_flagged <> 1");
 	$offset = (60*60*get_option('gmt_offset'));
 	$date = date('Y', time()+($offset)).'-'.date('m', time()+($offset)).'-'.date('d', time()+($offset));
 	$arr_events = array();
     if (!empty($events)) {
-        foreach($events as $event) {
-			$event_occurrences = mc_increment_event( $event );
-			$arr_events = array_merge( $arr_events, $event_occurrences );
-		}				
+		$groups = array();
+        foreach( array_keys($events) as $key) {
+			$event =& $events[$key];
+			if ( !in_array( $event->event_group_id, $groups ) ) {
+				$event_occurrences = mc_increment_event( $event );
+				$arr_events = array_merge( $arr_events, $event_occurrences );
+				if ( $event->event_span == 1 ) {
+					//$groups[] = $event->event_group_id;
+				}
+			}			
+		}
 	} 
 	return $arr_events;
 }
 
-function mc_get_rss_events() {
+function mc_get_rss_events( $cat_id=false) {
 	global $wpdb;
-	$events = $wpdb->get_results("SELECT *,event_begin as event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) ORDER BY event_added DESC LIMIT 0,15" );
-	foreach ( $events as $event ) {
+	if ( $cat_id ) { $cat = "WHERE event_category = $cat_id"; } else { $cat = ''; }
+	$events = $wpdb->get_results("SELECT *,event_begin as event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) $cat ORDER BY event_added DESC LIMIT 0,15" );
+	foreach ( array_keys($events) as $key ) {
+		$event =& $events[$key];	
 		$output[] = $event;
 	}
 	return $output;
@@ -54,51 +64,72 @@ function my_calendar_get_event($date,$id,$type='html') {
 	return $value;
 }
 // Grab all events for the requested date from calendar
-function my_calendar_grab_events($y,$m,$d,$category=null,$ltype='',$lvalue='') {
-    global $wpdb;
+function my_calendar_grab_events($y,$m,$d,$category=null,$ltype='',$lvalue='',$source='calendar') {
+			if ( isset($_GET['mcat']) ) { $ccategory = $_GET['mcat']; } else { $ccategory = $category; }
+			if ( isset($_GET['ltype']) ) { $cltype = $_GET['ltype']; } else { $cltype = $ltype; }
+			if ( isset($_GET['loc']) ) { $clvalue = $_GET['loc']; } else { $clvalue = $lvalue; }
+			if ( $ccategory == '' ) { $ccategory = 'all'; }
+			if ( $clvalue == '' ) { $clvalue = 'all';  }			
+			if ( $cltype == '' ) { $cltype = 'all'; }
+			if ( $clvalue == 'all' ) { $cltype = 'all'; }
 	if (!checkdate($m,$d,$y)) {	return;	} // not a valid date
+	$caching = ( get_option('mc_caching_enabled') == 'true' )?true:false;
+	if ( $source != 'upcoming' ) { // no caching on upcoming events by days widgets or lists
+		if ( $caching ) {
+			$output = mc_check_cache( $y, $m, $d, $ccategory, $cltype, $clvalue );
+			if ( $output && $output != 'empty' ) { return $output; }
+			if ( $output == 'empty' ) { return; }
+		}
+	}
+    global $wpdb;
 	$select_category = ( $category != null )?mc_select_category($category):'';
+	$select_location = mc_limit_string( 'grab', $ltype, $lvalue );
+
+	if ( $caching && $source != 'upcoming' ) { $select_category = ''; $select_location = ''; } 
+	// if caching, then need all categories/locations in cache. UNLESS this is an upcoming events list
+	
     $arr_events = array();
     // set the date format
     $date = $y . '-' . $m . '-' . $d;
-	$limit_string = mc_limit_string( 'grab', $ltype, $lvalue );
+	$limit_string = "event_flagged <> 1";
 	if ( date( 'w',strtotime( $date ) ) != 0 && date( 'w',strtotime( $date ) ) != 6 ) {
 		$weekday_string = "
-		SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $limit_string AND event_recur = 'E' AND event_begin <= '$date' AND event_repeats = 0 UNION
+		SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $select_location $limit_string AND event_recur = 'E' AND event_begin <= '$date' AND event_repeats = 0 UNION
 		SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) 
-		WHERE $select_category $limit_string AND event_recur = 'E' AND '$date' >= event_begin AND event_repeats != 0 
+		WHERE $select_category $select_location $limit_string AND event_recur = 'E' AND '$date' >= event_begin AND event_repeats != 0 
 		AND (event_repeats+1) >= ( (DATEDIFF('$date',event_end)+1) - ((WEEK('$date') - WEEK(event_end))*2) ) UNION ";		
 	} else {
 		$weekday_string = ''; 
 	}
 	$events = $wpdb->get_results($weekday_string . "
-	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $limit_string AND event_begin <= '$date' AND event_end >= '$date' AND event_recur = 'S'
+	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $select_location $limit_string AND event_begin <= '$date' AND event_end >= '$date' AND event_recur = 'S'
 	UNION
-	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $limit_string AND event_recur = 'Y' AND EXTRACT(YEAR FROM '$date') >= EXTRACT(YEAR FROM event_begin)
+	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $select_location $limit_string AND event_recur = 'Y' AND EXTRACT(YEAR FROM '$date') >= EXTRACT(YEAR FROM event_begin)
 	UNION
-	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $limit_string AND event_recur = 'M' AND EXTRACT(YEAR FROM '$date') >= EXTRACT(YEAR FROM event_begin) AND event_repeats = 0
+	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $select_location $limit_string AND event_recur = 'M' AND EXTRACT(YEAR FROM '$date') >= EXTRACT(YEAR FROM event_begin) AND event_repeats = 0
 	UNION
-	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $limit_string AND event_recur = 'M' AND EXTRACT(YEAR FROM '$date') >= EXTRACT(YEAR FROM event_begin) AND event_repeats != 0 AND (PERIOD_DIFF(EXTRACT(YEAR_MONTH FROM '$date'),EXTRACT(YEAR_MONTH FROM event_begin))) <= event_repeats
+	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $select_location $limit_string AND event_recur = 'M' AND EXTRACT(YEAR FROM '$date') >= EXTRACT(YEAR FROM event_begin) AND event_repeats != 0 AND (PERIOD_DIFF(EXTRACT(YEAR_MONTH FROM '$date'),EXTRACT(YEAR_MONTH FROM event_begin))) <= event_repeats
 	UNION
-	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $limit_string AND event_recur = 'U' AND EXTRACT(YEAR FROM '$date') >= EXTRACT(YEAR FROM event_begin) AND event_repeats = 0
+	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $select_location $limit_string AND event_recur = 'U' AND EXTRACT(YEAR FROM '$date') >= EXTRACT(YEAR FROM event_begin) AND event_repeats = 0
 	UNION
-	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $limit_string AND event_recur = 'U' AND EXTRACT(YEAR FROM '$date') >= EXTRACT(YEAR FROM event_begin) AND event_repeats != 0 AND (PERIOD_DIFF(EXTRACT(YEAR_MONTH FROM '$date'),EXTRACT(YEAR_MONTH FROM event_begin))) <= event_repeats
+	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $select_location $limit_string AND event_recur = 'U' AND EXTRACT(YEAR FROM '$date') >= EXTRACT(YEAR FROM event_begin) AND event_repeats != 0 AND (PERIOD_DIFF(EXTRACT(YEAR_MONTH FROM '$date'),EXTRACT(YEAR_MONTH FROM event_begin))) <= event_repeats
 	UNION	
-	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $limit_string AND event_recur = 'B' AND '$date' >= event_begin AND event_repeats = 0
+	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $select_location $limit_string AND event_recur = 'B' AND '$date' >= event_begin AND event_repeats = 0
 	UNION
-	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $limit_string AND event_recur = 'B' AND '$date' >= event_begin AND event_repeats != 0 AND (event_repeats*14) >= (TO_DAYS('$date') - TO_DAYS(event_end))
+	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $select_location $limit_string AND event_recur = 'B' AND '$date' >= event_begin AND event_repeats != 0 AND (event_repeats*14) >= (TO_DAYS('$date') - TO_DAYS(event_end))
 	UNION
-	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $limit_string AND event_recur = 'W' AND '$date' >= event_begin AND event_repeats = 0
+	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $select_location $limit_string AND event_recur = 'W' AND '$date' >= event_begin AND event_repeats = 0
 	UNION
-	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $limit_string AND event_recur = 'W' AND '$date' >= event_begin AND event_repeats != 0 AND (event_repeats*7) >= (TO_DAYS('$date') - TO_DAYS(event_end))	
+	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $select_location $limit_string AND event_recur = 'W' AND '$date' >= event_begin AND event_repeats != 0 AND (event_repeats*7) >= (TO_DAYS('$date') - TO_DAYS(event_end))	
 	UNION
-	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $limit_string AND event_recur = 'D' AND '$date' >= event_begin AND event_repeats = 0
+	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $select_location $limit_string AND event_recur = 'D' AND '$date' >= event_begin AND event_repeats = 0
 	UNION
-	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $limit_string AND event_recur = 'D' AND '$date' >= event_begin AND event_repeats != 0 AND (event_repeats) >= (TO_DAYS('$date') - TO_DAYS(event_end))	
+	SELECT *,event_begin AS event_original_begin FROM " . MY_CALENDAR_TABLE . " JOIN " . MY_CALENDAR_CATEGORIES_TABLE . " ON (event_category=category_id) WHERE $select_category $select_location $limit_string AND event_recur = 'D' AND '$date' >= event_begin AND event_repeats != 0 AND (event_repeats) >= (TO_DAYS('$date') - TO_DAYS(event_end))	
 	ORDER BY event_id");
 
 	if (!empty($events)) {
-			foreach($events as $event) {
+			foreach( array_keys($events) as $key) {
+			$event =& $events[$key];
 			// add timestamps for start and end
 				$diff = strtotime($event->event_end) - strtotime($event->event_begin);
 				$event_end = date( 'Y-m-d',( strtotime( $date )+$diff ) );
@@ -302,9 +333,87 @@ function my_calendar_grab_events($y,$m,$d,$category=null,$ltype='',$lvalue='') {
 				}
 			}
      	}
-
-    return $arr_events;
+	if ( $source != 'upcoming' && $caching ) { 
+		mc_create_cache( $arr_events, $y, $m, $d );
+		$output = mc_check_cache( $y, $m, $d, $ccategory, $cltype, $clvalue );
+		return $output;
+	} else {
+		return $arr_events;
+	}
 }
+
+function mc_check_cache($y, $m, $d, $category, $ltype, $lvalue) {
+	$caching = ( get_option('mc_caching_enabled') == 'true' )?true:false;
+	if ( $caching == true ) {
+		$cache = get_transient("mc_cache");
+		if ( isset( $cache[$y][$m][$d] ) ) {
+			$value = $cache[$y][$m][$d];
+		} else {
+			return false;
+		}
+		if ( $value ) { return mc_clean_cache($value, $category,$ltype,$lvalue); } else { return false; }
+	} else {
+		return false;
+	}
+}
+
+function mc_clean_cache( $cache, $category, $ltype, $lvalue ) {
+global $wpdb;
+	// process cache to strip events which do not meet current restrictions
+	if ( $cache == 'empty' ) return $cache;
+	$type = ($ltype != 'all')?"event_$ltype":"event_state";
+	$return = false;
+	if ( is_array($cache) ) {
+			if ( strpos( $category, ',' ) !== false ) {
+				$cats = explode(',',$category);
+			} else {
+				$cats = array( $category );
+			}
+		foreach ( $cache as $key=>$value ) {
+			foreach ( $cats as $cat ) {
+				if ( is_numeric($cat) ) { $cat = (int) $cat; } 
+				if ( 
+					( $value->event_category == $cat || $category == 'all' || $value->category_name == $cat ) &&
+					( $value->$type == $lvalue || ( $ltype == 'all' && $lvalue == 'all' ) )
+					) {
+					$val = $value->$type;
+					$return[$key]=$value;
+				} 
+			}
+		}
+		return $return;
+	}
+}
+
+function mc_create_cache($arr_events, $y, $m, $d ) {
+	$caching = ( get_option('mc_caching_enabled') == 'true' )?true:false;
+	if ( $arr_events == false ) { $arr_events = 'empty'; }
+	if ( $caching == true ) {
+		$before = memory_get_usage();
+		$ret = get_transient("mc_cache");
+		$after = memory_get_usage();
+		$mem_limit = mc_allocated_memory( $before, $after );
+		if ( $mem_limit ) { return; } // if cache is maxed, don't add additional references. Cache expires every two days.
+		$cache = get_transient("mc_cache");		
+		$cache[$y][$m][$d] = $arr_events;
+		set_transient( "mc_cache",$cache, 60*60*48 );
+	}
+}
+
+function mc_allocated_memory($before, $after) {
+    $size = ($after - $before);
+	$total_allocation = str_replace('M','',ini_get('memory_limit'))*1048576; // CONVERT TO BYTES
+	$limit =  $total_allocation/64;
+	// limits each cache to occupying 1/64 of allowed PHP memory (usually will be between 125K and 1MB). 
+	if ( $size > $limit ) { return true; } else { return false; }
+}
+
+function mc_delete_cache() {
+	delete_transient( 'mc_cache' );
+	delete_transient( 'mc_todays_cache' );
+	delete_transient( 'mc_cache_upcoming' );
+}
+
 function _mc_increment_values( $recur ) {
 	switch ($recur) {
 		case "S": // single
@@ -533,6 +642,7 @@ function mc_increment_event( $event, $instance='', $object=true ) {
 		} else { // I really need to decide about getting rid of infinite events.
 			$event_begin = $event->event_begin;
 			$event_end = $event->event_end;
+			$offset = (60*60*get_option('gmt_offset'));			
 			$today = date('Y',time()+($offset)).'-'.date('m',time()+($offset)).'-'.date('d',time()+($offset));
 			
 			switch ($event->event_recur) {
@@ -593,14 +703,15 @@ function mc_increment_event( $event, $instance='', $object=true ) {
 
 							for ($realStart;$realStart<=$realFinish;$realStart++) { // jump forward to near present.
 							$this_date = my_calendar_add_date($event_begin,($realStart*7),0,0);
-							$this_end = my_calendar_add_date($event_end,($realStart*7),0,0);									
+							$this_end = my_calendar_add_date($event_end,($realStart*7),0,0);
 							if ( my_calendar_date_comp( $event->event_begin,$this_date ) ) {
 									${$realStart} = clone($event);
 									${$realStart}->event_begin = $this_date;
 									$this_event_start = strtotime("$this_date $event->event_time");
 									$this_event_end = strtotime("$this_end $event->event_endtime");
+									${$realStart}->event_end = date('Y-m-d',$this_event_end);
 									${$realStart}->event_start_ts = $this_event_start;
-									${$realStart}->event_end_ts = $this_event_end;												
+									${$realStart}->event_end_ts = $this_event_end;											
 									$arr_events[] = ${$realStart};
 								}
 							}
@@ -616,6 +727,7 @@ function mc_increment_event( $event, $instance='', $object=true ) {
 								${$realDays}->event_end = $this_end;
 								$this_event_start = strtotime("$this_date $event->event_time");
 								$this_event_end = strtotime("$this_end $event->event_endtime");
+								${$realStart}->event_end = date('Y-m-d',$this_event_end);								
 								${$realDays}->event_start_ts = $this_event_start;
 								${$realDays}->event_end_ts = $this_event_end;											
 								$arr_events[] = ${$realDays};
@@ -643,6 +755,7 @@ function mc_increment_event( $event, $instance='', $object=true ) {
 									${$realStart}->event_end = $this_end;
 									$this_event_start = strtotime("$this_date $event->event_time");
 									$this_event_end = strtotime("$this_end $event->event_endtime");
+									${$realStart}->event_end = date('Y-m-d',$this_event_end);									
 									${$realStart}->event_start_ts = $this_event_start;
 									${$realStart}->event_end_ts = $this_event_end;												
 									$arr_events[] = ${$realStart};
@@ -660,6 +773,7 @@ function mc_increment_event( $event, $instance='', $object=true ) {
 									${$realDays}->event_end = $this_end;
 									$this_event_start = strtotime("$this_date $event->event_time");
 									$this_event_end = strtotime("$this_end $event->event_endtime");
+									${$realStart}->event_end = date('Y-m-d',$this_event_end);									
 									${$realDays}->event_start_ts = $this_event_start;
 									${$realDays}->event_end_ts = $this_event_end;												
 									$arr_events[] = ${$realDays};
@@ -688,6 +802,7 @@ function mc_increment_event( $event, $instance='', $object=true ) {
 									${$realStart}->event_begin = $this_date;
 									$this_event_start = strtotime("$this_date $event->event_time");
 									$this_event_end = strtotime("$this_end $event->event_endtime");
+									${$realStart}->event_end = date('Y-m-d',$this_event_end);									
 									${$realStart}->event_start_ts = $this_event_start;
 									${$realStart}->event_end_ts = $this_event_end;												
 									$arr_events[] = ${$realStart};
@@ -705,6 +820,7 @@ function mc_increment_event( $event, $instance='', $object=true ) {
 								${$realDays}->event_end = $this_end;
 								$this_event_start = strtotime("$this_date $event->event_time");
 								$this_event_end = strtotime("$this_end $event->event_endtime");
+								${$realDays}->event_end = date('Y-m-d',$this_event_end);								
 								${$realDays}->event_start_ts = $this_event_start;
 								${$realDays}->event_end_ts = $this_event_end;											
 								$arr_events[] = ${$realDays};
@@ -717,7 +833,7 @@ function mc_increment_event( $event, $instance='', $object=true ) {
 					$nDays = 5;
 					$fDays = 5;
 					$day_of_event = date( 'D', strtotime($event->event_begin) );
-					$week_of_event = week_of_month( date( 'd', strtotime($event->event_begin) ) );
+					$week_of_event = week_of_month( date( 'j', strtotime($event->event_begin) ) );
 					$day_diff = jd_date_diff($event_begin, $event_end);
 					
 						if (my_calendar_date_comp( $event_begin, my_calendar_add_date($today,-($nDays),0,0) )) {
@@ -734,7 +850,7 @@ function mc_increment_event( $event, $instance='', $object=true ) {
 									$timestamp = strtotime(my_calendar_add_date($approxbegin,$n,0,0));
 									$current_day = date('D',$timestamp);
 									if ($current_day == $day_of_event) {
-										$current_week = week_of_month( date( 'd',$timestamp));
+										$current_week = week_of_month( date( 'j',$timestamp));
 										$current_date = date( 'd',$timestamp);
 										if ($current_day == $day_of_event && $current_week == $week_of_event) {
 											$date_of_event_this_month = $current_date;
@@ -750,8 +866,8 @@ function mc_increment_event( $event, $instance='', $object=true ) {
 													$month = date( 'm', $timestamp);
 												}
 												$string = date( 'Y', $timestamp ).'-'.$month.'-'.$day;
-												if ( date('D',strtotime($string)) == $day_of_event ) {
-													$date_of_event_this_month = $i;
+												if ( date('D',strtotime($string)) == $day_of_event && $week_of_event == week_of_month( $i ) ) {
+													$date_of_event_this_month = $i;										
 													break;
 												}											
 											}
@@ -767,7 +883,7 @@ function mc_increment_event( $event, $instance='', $object=true ) {
 												}
 											}
 										}
-										if ( ($current_day == $day_of_event && $current_week == $week_of_event) || ($current_date >= $date_of_event_this_month && $current_date <= $date_of_event_this_month+$day_diff && $date_of_event_this_month != '' ) ) {
+										if ( ($current_day == $day_of_event && $current_week == $week_of_event) || ($current_date >= $date_of_event_this_month && $current_date <= $date_of_event_this_month+$day_diff && $date_of_event_this_month != '' ) ) {									
 											$begin = my_calendar_add_date($approxbegin,$n,0,0);
 											$end = my_calendar_add_date($approxend,$n,0,0);
 											${$realStart} = clone($event);
@@ -775,6 +891,7 @@ function mc_increment_event( $event, $instance='', $object=true ) {
 											${$realStart}->event_end = $end;
 											$this_event_start = strtotime("$begin $event->event_time");
 											$this_event_end = strtotime("$end $event->event_endtime");
+											${$realStart}->event_end = date('Y-m-d',$this_event_end);											
 											${$realStart}->event_start_ts = $this_event_start;
 											${$realStart}->event_end_ts = $this_event_end;
 												$arr_events[]=${$realStart};	
@@ -831,6 +948,7 @@ function mc_increment_event( $event, $instance='', $object=true ) {
 												${$realDays}->event_end = $end;	
 												$this_event_start = strtotime("$begin $event->event_time");
 												$this_event_end = strtotime("$end $event->event_endtime");
+												${$realDays}->event_end = date('Y-m-d',$this_event_end);			
 												${$realDays}->event_start_ts = $this_event_start;
 												${$realDays}->event_end_ts = $this_event_end;												
 												$arr_events[]=${$realDays};

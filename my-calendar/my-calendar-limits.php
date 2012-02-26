@@ -1,9 +1,10 @@
 <?php
 function mc_select_category($category, $type='event', $group='events' ) {
+$category = urldecode($category);
 global $wpdb;
 	$select_category = '';
 	$data = ($group=='category')?'category_id':'event_category';
-	if ( isset( $_GET['mcat'] ) ) { $category = (int) $_GET['mcat']; }
+	if ( isset( $_GET['mcat'] ) ) { $category = $_GET['mcat']; }
 	if ( $category == 'all' || strpos( $category, "all" ) !== false ) {
 		return '';
 	} else {
@@ -17,9 +18,8 @@ global $wpdb;
 		$i = 1;
 		foreach ($categories as $key) {
 			if ( is_numeric($key) ) {
-				if ($i == 1) {
-					$select_category .= ($type=='all')?" WHERE (":' (';
-				}				
+				$key = (int) $key;
+				if ($i == 1) { $select_category .= ($type=='all')?" WHERE (":' ('; }				
 				$select_category .= " $data = $key";
 				if ($i < $numcat) {
 					$select_category .= " OR ";
@@ -28,11 +28,10 @@ global $wpdb;
 				}
 			$i++;
 			} else {
+				$key = esc_sql(trim($key));
 				$cat = $wpdb->get_row("SELECT category_id FROM " . my_calendar_categories_table() . " WHERE category_name = '$key'");
 				$category_id = $cat->category_id;
-				if ($i == 1) {
-					$select_category .= ($type=='all')?" WHERE (":' (';
-				}
+				if ($i == 1) {	$select_category .= ($type=='all')?" WHERE (":' (';	}
 				$select_category .= " $data = $category_id";
 				if ($i < $numcat) {
 					$select_category .= " OR ";
@@ -59,12 +58,10 @@ global $wpdb;
 	}
 }
 
-
-
 function mc_limit_string($type='',$ltype='',$lvalue='') {
-global $user_ID;	
+global $user_ID;
 	 $user_settings = get_option('mc_user_settings');
-	 $limit_string = "event_flagged <> 1";
+	 $limit_string = "";
 	 if ( get_option('mc_user_settings_enabled') == 'true' && $user_settings['my_calendar_location_default']['enabled'] == 'on' || isset($_GET['loc']) && isset($_GET['ltype']) || ( $ltype !='' && $lvalue != '' )  ) {
 		if ( !isset($_GET['loc']) && !isset($_GET['ltype']) ) {
 			if (  $ltype == '' && $lvalue == '' ) {
@@ -76,7 +73,7 @@ global $user_ID;
 				}
 			} else if ( $ltype !='' && $lvalue != '' ) {	
 				$location_type = $ltype;
-				$current_location = $lvalue;
+				$current_location = esc_sql( $lvalue );
 			}
 		} else {
 			$current_location = urldecode($_GET['loc']);
@@ -98,14 +95,9 @@ global $user_ID;
 					break;
 				}			
 		}
-		if ($current_location != 'none' && $current_location != '') {
-			//if ($select_category == "") {
-				$limit_string = "$location_type='$current_location'";
-				$limit_string .= ($type=='all')?' AND':"";
-			//} else {
-			//	$limit_string = "AND $location_type='$current_location'";
-			//	$limit_string .= ($type=='all')?'':'';				
-			//}
+		if ($current_location != 'all' && $current_location != '') {
+				$limit_string = "$location_type='$current_location' AND";
+				//$limit_string .= ($type=='all')?' AND':"";
 		}
 	 }
 	 return $limit_string;

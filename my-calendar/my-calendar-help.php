@@ -120,6 +120,12 @@ global $wp_plugin_dir;
 <dt><code>{endtime}</code></dt>
 <dd><?php _e('Displays the time at which the event ends.','my-calendar'); ?></dd>
 
+<dt><code>{daterange}</code></dt>
+<dd><?php _e('Displays the beginning date to the end date for events. Does not show end date if same as start date.','my-calendar'); ?></dd>
+
+<dt><code>{multidate}</code></dt>
+<dd><?php _e('For multi-day events displays an unordered list of dates and times for events in this group. Otherwise, beginning date/time.','my-calendar'); ?></dd>
+
 <dt><code>{author}</code></dt>
 <dd><?php _e('Displays the WordPress author who posted the event.','my-calendar'); ?></dd>
 
@@ -132,8 +138,14 @@ global $wp_plugin_dir;
 <dt><code>{shortdesc}</code></dt>
 <dd><?php _e('Displays the short version of the event description.','my-calendar'); ?></dd>
 
+<dt><code>{shortdesc_raw}</code></dt>
+<dd><?php _e('Displays short description without converting paragraphs.','my-calendar'); ?></dd>
+
 <dt><code>{description}</code></dt>
 <dd><?php _e('Displays the description of the event.','my-calendar'); ?></dd>
+
+<dt><code>{description_raw}</code></dt>
+<dd><?php _e('Displays description without converting paragraphs.','my-calendar'); ?></dd>
 
 <dt><code>{image}</code></dt>
 <dd><?php _e('Image associated with the event.','my-calendar'); ?></dd>
@@ -235,6 +247,13 @@ global $wp_plugin_dir;
 			</div>
 		</div>
 	</div>
+<div id="get-support">
+<div class="postbox">
+<h3 id="template"><?php _e('Get Plug-in Support','my-calendar'); ?></h3>
+	<div class="inside">
+<?php jcd_get_support_form(); ?>
+	</div>
+</div>
 	
 <div id="notes">
 <div class="postbox">

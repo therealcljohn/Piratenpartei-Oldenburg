@@ -15,7 +15,8 @@ function my_calendar_insert($atts) {
 			), $atts));
 	if ( isset($_GET['format']) ) {
 		$format = mysql_real_escape_string($_GET['format']);
-	}	
+	}
+	//apply_filters( 'mc_filter_calendar_name',$all_styles,$styles );
 	return my_calendar($name,$format,$category,$showkey,$shownav,$toggle,$time, $ltype, $lvalue );
 }
 

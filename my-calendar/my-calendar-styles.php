@@ -50,7 +50,7 @@ function mc_default_style( $filename, $return='content' ) {
 function mc_write_styles($stylefile, $my_calendar_style) {
 	if ( is_writeable( $stylefile ) ) {
 		$f = fopen( $stylefile, 'w+' );
-		fwrite( $f, $my_calendar_style );
+		fwrite( $f, $my_calendar_style, 20000 ); // number of bytes to write, max.
 		fclose( $f );
 		return true;
 	} else {
@@ -163,7 +163,7 @@ my_calendar_check_db();
 	echo "</optgroup>";
 ?>
 	</select>
-	<input type="submit" name="save" class="button-primary" value="<?php _e('Choose Style','my-calendar'); ?> &raquo;" />
+	<input type="submit" name="save" class="button-secondary" value="<?php _e('Choose Style','my-calendar'); ?>" />
 	</p>	
 	</fieldset>
 	</form>
@@ -192,10 +192,10 @@ my_calendar_check_db();
 	<input type="checkbox" id="reset_styles" name="reset_styles" <?php if (mc_is_custom_style(get_option('mc_css_file'))) { echo "disabled='disabled'"; } ?> /> <label for="reset_styles"><?php _e('Restore My Calendar stylesheet','my-calendar'); ?></label> <input type="checkbox" id="use_styles" name="use_styles" <?php jd_cal_checkCheckbox('mc_use_styles','true'); ?> /> <label for="use_styles"><?php _e('Disable My Calendar Stylesheet','my-calendar'); ?></label>
 	</p>	
 	<p>
-	<label for="style"><?php _e('Edit the stylesheet for My Calendar','my-calendar'); ?></label><br /><textarea id="style" name="style" rows="30" cols="80"<?php if ( get_option('mc_use_styles') == 'true' ) { echo "disabled='disabled'"; } ?>><?php echo $my_calendar_style; ?></textarea>
+	<label for="style"><?php _e('Edit the stylesheet for My Calendar','my-calendar'); ?></label><br /><textarea class="style-editor" id="style" name="style" rows="30" cols="80"<?php if ( get_option('mc_use_styles') == 'true' ) { echo "disabled='disabled'"; } ?>><?php echo $my_calendar_style; ?></textarea>
 	</p>	
 	<p>
-		<input type="submit" name="save" class="button-primary" value="<?php _e('Save','my-calendar'); ?> &raquo;" />
+		<input type="submit" name="save" class="button-primary" value="<?php _e('Save Changes','my-calendar'); ?>" />
 	</p>	
 	</fieldset>
   </form>

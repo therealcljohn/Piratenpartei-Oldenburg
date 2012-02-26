@@ -77,6 +77,11 @@ delete_option( 'mc_details' );
 delete_option( 'mc_widget_defaults' );
 delete_option( 'mc_default_sort' );
 delete_option( 'mc_show_event_vcal' );
+delete_option( 'mc_caching_enabled' );
+delete_option( 'mc_week_caption' );
+delete_option( 'mc_show_print' );
+delete_option( 'mc_multisite_show' );
+delete_option( 'mc_mini_uri' );
 add_option( 'mc_uninstalled','true' );
 }
 ?>

@@ -8,7 +8,7 @@ function my_calendar_manage_locations() {
   global $wpdb;
   // My Calendar must be installed and upgraded before this will work
   check_my_calendar();
-	$formats = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%d' )
+	$formats = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%d', '%s' )
   
   
 ?>
@@ -35,7 +35,8 @@ my_calendar_check_db();
 		'location_url'=>$_POST['location_url'],
 		'location_longitude'=>$_POST['location_longitude'],
 		'location_latitude'=>$_POST['location_latitude'],
-		'location_zoom'=>$_POST['location_zoom']
+		'location_zoom'=>$_POST['location_zoom'],
+		'location_phone'=>$_POST['location_phone']
 		);
 		$results = $wpdb->insert( my_calendar_locations_table(), $add, $formats );
 	  
@@ -68,7 +69,8 @@ my_calendar_check_db();
 		'location_url'=>$_POST['location_url'],
 		'location_longitude'=>$_POST['location_longitude'],
 		'location_latitude'=>$_POST['location_latitude'],
-		'location_zoom'=>$_POST['location_zoom']
+		'location_zoom'=>$_POST['location_zoom'],
+		'location_phone'=>$_POST['location_phone']
 		);
 		$where = array(
 		'location_id'=>(int) $_POST['location_id']
@@ -141,6 +143,9 @@ global $wpdb;
 			<p>
 			<label for="location_street2"><?php _e('Street Address (2)','my-calendar'); ?></label> <input type="text" id="location_street2" name="location_street2" class="input" size="40" value="<?php if ( !empty( $cur_loc ) ) esc_attr_e(stripslashes($cur_loc->location_street2)); ?>" />
 			</p>
+			<p>
+			<label for="location_phone"><?php _e('Phone','my-calendar'); ?></label> <input type="text" id="location_phone" name="location_phone" class="input" size="32" value="<?php if ( !empty( $cur_loc ) ) esc_attr_e(stripslashes($cur_loc->location_phone)); ?>" />
+			</p>			
 			<p>
 			<label for="location_city"><?php _e('City','my-calendar'); ?></label> 
 			<?php if ( mc_controlled_field( 'city' ) ) {
@@ -278,7 +283,7 @@ global $wpdb;
        foreach ( $locations as $location ) {
 	   $class = ($class == 'alternate') ? '' : 'alternate';
            ?>
-           <tr class="<?php echo $class; ?>">
+         <tr class="<?php echo $class; ?>">
 	     <th scope="row"><?php echo $location->location_id; ?></th>
 	     <td><?php echo stripslashes($location->location_label) . "<br />" . stripslashes($location->location_street) . "<br />" . stripslashes($location->location_street2) . "<br />" . stripslashes($location->location_city) . ", " . stripslashes($location->location_state) . " " . stripslashes($location->location_postcode); ?></td>
 	     <td><a href="<?php echo admin_url("admin.php?page=my-calendar-locations&amp;mode=edit&amp;location_id=$location->location_id"); ?>" class='edit'><?php _e('Edit','my-calendar'); ?></a></td>

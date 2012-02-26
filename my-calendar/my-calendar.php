@@ -5,9 +5,9 @@ Plugin URI: http://www.joedolson.com/articles/my-calendar/
 Description: Accessible WordPress event calendar plugin. Show events from multiple calendars on pages, in posts, or in widgets.
 Author: Joseph C Dolson
 Author URI: http://www.joedolson.com
-Version: 1.9.2
+Version: 1.10.10
 */
-/*  Copyright 2009-2011  Joe Dolson (email : joe@joedolson.com)
+/*  Copyright 2009-2012  Joe Dolson (email : joe@joedolson.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,12 +24,18 @@ Version: 1.9.2
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 global $mc_version, $wpdb;
-$mc_version = '1.9.2';
+$mc_version = '1.10.10';
 
 // Define the tables used in My Calendar
-define('MY_CALENDAR_TABLE', $wpdb->prefix . 'my_calendar');
-define('MY_CALENDAR_CATEGORIES_TABLE', $wpdb->prefix . 'my_calendar_categories');
-define('MY_CALENDAR_LOCATIONS_TABLE', $wpdb->prefix . 'my_calendar_locations');
+if ( function_exists('is_multisite') && is_multisite() && get_site_option('mc_multisite_show') == 1 ) {
+	define('MY_CALENDAR_TABLE', $wpdb->base_prefix . 'my_calendar');
+	define('MY_CALENDAR_CATEGORIES_TABLE', $wpdb->base_prefix . 'my_calendar_categories');
+	define('MY_CALENDAR_LOCATIONS_TABLE', $wpdb->base_prefix . 'my_calendar_locations');
+} else {
+	define('MY_CALENDAR_TABLE', $wpdb->prefix . 'my_calendar');
+	define('MY_CALENDAR_CATEGORIES_TABLE', $wpdb->prefix . 'my_calendar_categories');
+	define('MY_CALENDAR_LOCATIONS_TABLE', $wpdb->prefix . 'my_calendar_locations');
+}
 
 if ( function_exists('is_multisite') && is_multisite() ) {
 // Define the tables used in My Calendar
@@ -66,7 +72,6 @@ include(dirname(__FILE__).'/my-calendar-detect-mobile.php' );
 include(dirname(__FILE__).'/my-calendar-templating.php' );
 include(dirname(__FILE__).'/my-calendar-group-manager.php' );
 include(dirname(__FILE__).'/my-calendar-export.php' );
-include(dirname(__FILE__).'/my-calendar-cronjobs.php' );
 
 // Install on activation
 register_activation_hook( __FILE__, 'check_my_calendar' );
@@ -105,11 +110,10 @@ add_action( 'edit_user_profile', 'mc_user_profile' );
 add_action( 'profile_update', 'mc_user_save_profile');
 add_action( 'init', 'my_calendar_add_feed' );
 add_action( 'admin_menu', 'my_calendar_add_javascript' );
-add_action( 'init','my_calendar_add_display_javascript' );
-add_action( 'wp_footer','my_calendar_calendar_javascript' );
+add_action( 'wp_footer','mc_footer_js' );
 add_action( 'wp_head','my_calendar_fouc' );
+add_action( 'wp_enqueue_scripts','mc_header_js' );
 add_action( 'init', 'my_calendar_export_vcal', 200 );
-add_action( 'init', 'my_calendar_cronjobs', 200 );
 // Add filters 
 add_filter( 'widget_text', 'do_shortcode', 9 );
 add_filter('plugin_action_links', 'jd_calendar_plugin_action', -10, 2);
@@ -122,20 +126,23 @@ function jd_show_support_box() {
 <a href="http://www.joedolson.com/articles/my-calendar/users-guide/" rel="external" class="mcbuy"><?php _e("Buy the <strong>NEW</strong><br /> My Calendar User's Guide",'my-calendar'); ?></a>
 </div>
 <div class="resources">
-<ul>
-<li><a href="http://www.joedolson.com/articles/my-calendar/" rel="external"><?php _e("Get Support",'my-calendar'); ?></a></li>
-<li><a href="<?php echo admin_url("admin.php?page=my-calendar-help"); ?>"><?php _e("My Calendar Help",'my-calendar'); ?></a></li>
-<li><strong><a href="http://www.joedolson.com/donate.php" rel="external"><?php _e("Make a Donation",'my-calendar'); ?></a></strong></li>
-<li><form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-<div>
-<input type="hidden" name="cmd" value="_s-xclick" />
-<input type="hidden" name="hosted_button_id" value="UZBQUG2LKKMRW" />
-<input type="image" src="https://www.paypalobjects.com/WEBSCR-640-20110429-1/en_US/i/btn/btn_donate_LG.gif" name="submit" alt="Make a gift to support My Calendar!" />
-<img alt="" src="https://www.paypalobjects.com/WEBSCR-640-20110429-1/en_US/i/scr/pixel.gif" width="1" height="1" />
-</div>
-</form>
-</li>
-</ul>
+	<ul>
+		<li><a href="<?php echo admin_url("admin.php?page=my-calendar-help"); ?>#get-support"><?php _e("Get Support",'my-calendar'); ?></a></li>
+		<li><a href="http://www.joedolson.com/articles/bugs/"><?php _e("Report a bug",'my-calendar'); ?></a></li>
+		<li><a href="<?php echo admin_url("admin.php?page=my-calendar-help"); ?>"><?php _e("My Calendar Help",'my-calendar'); ?></a></li>
+		<li><strong><a href="http://www.joedolson.com/donate.php" rel="external"><?php _e("Make a Donation",'my-calendar'); ?></a></strong></li>
+		<li><form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+		<div>
+		<input type="hidden" name="cmd" value="_s-xclick" />
+		<input type="hidden" name="hosted_button_id" value="UZBQUG2LKKMRW" />
+		<input type="image" src="https://www.paypalobjects.com/WEBSCR-640-20110429-1/en_US/i/btn/btn_donate_LG.gif" name="submit" alt="Make a gift to support My Calendar!" />
+		<img alt="" src="https://www.paypalobjects.com/WEBSCR-640-20110429-1/en_US/i/scr/pixel.gif" width="1" height="1" />
+		</div>
+		</form>
+		</li>
+		<li><a href="http://profiles.wordpress.org/users/joedolson/"><?php _e('Check out my other plug-ins','my-calendar'); ?></a></li>
+		<li><a href="http://wordpress.org/extend/plugins/my-calendar/"><?php _e('Rate this plug-in','my-calendar'); ?></a></li>
+	</ul>
 </div>
 </div>
 <?php
@@ -143,10 +150,10 @@ function jd_show_support_box() {
 
 // Function to deal with adding the calendar menus
 function my_calendar_menu() {
-  global $wpdb;
+  global $wpdb, $wp_plugin_url;
   check_my_calendar();
   $allowed_group = ( get_option('mc_can_manage_events') == '' )?'manage_options':get_option('mc_can_manage_events');
-  $icon_path = site_url().'/wp-content/plugins/'.basename(dirname(__FILE__)).'/images';
+  $icon_path = $wp_plugin_url.'/'.basename(dirname(__FILE__)).'/images';
 	if ( function_exists('add_object_page') ) {
 		add_object_page(__('My Calendar','my-calendar'), __('My Calendar','my-calendar'), $allowed_group, 'my-calendar', 'edit_my_calendar',$icon_path.'/icon.png' );
 	} else {  

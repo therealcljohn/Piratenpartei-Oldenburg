@@ -1,6 +1,7 @@
 <?php
 function my_calendar_rss() {
 // establish template
+if ( isset($_GET['mcat']) ) { $cat_id = (int) $_GET['mcat']; } else { $cat_id = false; }
 	$template = "\n<item>
     <title>{title}</title>
     <link>{link}</link>
@@ -40,15 +41,20 @@ $output = '<?xml version="1.0" encoding="'.get_bloginfo('charset').'"?>
   <lastBuildDate>'. mysql2date('D, d M Y H:i:s +0000', time()+$offset) .'</lastBuildDate>
   <atom:link href="'. mc_get_current_url() .'" rel="self" type="application/rss+xml" />';
 
-	$events = mc_get_rss_events();
+	$events = mc_get_rss_events( $cat_id );
 	if ( is_array( $events) ) {
 		//print_r($events);
 	}
-	$before = 0;
-	$after = 15;
-	foreach ( $events as $event ) {
-		$array = event_as_array($event);
-		$output .= jd_draw_template( $array, $template, 'rss' );
+	$groups = array();
+	foreach ( array_keys($events) as $key ) {
+		$event =& $events[$key];	
+		if ( !in_array( $event->event_group_id, $groups ) ) {
+			$array = event_as_array($event);
+			$output .= jd_draw_template( $array, $template, 'rss' );
+			if ( $event->event_span == 1 ) {
+				$groups[] = $event->event_group_id;
+			}		
+		}
 	}
 $output .= '</channel>
 </rss>';
