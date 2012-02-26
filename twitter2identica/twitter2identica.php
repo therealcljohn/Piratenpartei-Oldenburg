@@ -71,6 +71,9 @@
 
   /* STOP EDITING HERE IF YOU DO NOT KNOW WHAT YOU ARE DOING */
 
+  //Set this to be able to call the script directly by a cronjob (php /var/www/blaaa)
+  $_GET["pwd"]=$EXECUTE_PASSWORD;
+
   $DATE_FILE    = dirname(__FILE__) . "/" . $TWITTER_NICK . ".date";
   $IDENTICA_API = "https://identi.ca/api/statuses/update.xml";
   $LOCK_FILE    = dirname(__FILE__) . "/" . $TWITTER_NICK . ".lock";
@@ -212,4 +215,7 @@
     print("//-->\n");
     print("</script>\n");
   }
+
+  // allow next execution
+  file_put_contents($LOCK_FILE, "0");
 ?>
