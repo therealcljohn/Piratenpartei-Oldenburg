@@ -17,23 +17,47 @@ function jd_draw_template($array,$template,$type='list') {
 }
 
 function mc_maplink( $event, $request='map', $source='event' ) {
+//&zoom=17
+
 	if ( $source == 'event' ) {
+		//Google Map String
 		$map_string = $event->event_street.' '.$event->event_street2.' '.$event->event_city.' '.$event->event_state.' '.$event->event_postcode.' '.$event->event_country;	
 		$zoom = ($event->event_zoom != 0)?$event->event_zoom:'15';	
 		$map_string = str_replace(" ","+",$map_string);
+
+
+		//Open Routeservice Map String http://wiki.openstreetmap.org/wiki/Search
+	/*echo "http://nominatim.openstreetmap.org/search?email=admin@piratenpartei-oldenburg.de&limit=1format=json&q=".urlencode("$event->event_city $event->event_street");
+print_r($nominatim);
+		$map_string = "mlat=".$nominatim[0]->lat."&"."mlon=".$nominatim[0]->lon;
+*/
 		if ($event->event_longitude != '0.000000' && $event->event_latitude != '0.000000') {
+			//Google Maps String
 			$map_string = "$event->event_latitude,$event->event_longitude";
+/*			//Open Streetmap String
+			$map_string = "mlat=$event->event_latitude&mlon=$event->event_longitude";*/
 		}
 	} else {
 		$map_string = $event->location_street.' '.$event->location_street2.' '.$event->location_city.' '.$event->location_state.' '.$event->location_postcode.' '.$event->location_country;	
 		$zoom = ($event->location_zoom != 0)?$event->location_zoom:'15';	
 		$map_string = str_replace(" ","+",$map_string);
+
+/*		//Open Routeservice Map String http://wiki.openstreetmap.org/wiki/Search
+		$nominatim = json_decode(file_get_contents("http://nominatim.openstreetmap.org/search?email=admin@piratenpartei-oldenburg.de&limit=1&format=json&q=".urlencode("$event->event_city $event->event_street")));
+		$map_string = "mlat=".$nominatim[0]->lat."&"."mlon=".$nominatim[0]->lon;*/
+
 		if ($event->location_longitude != '0.000000' && $event->location_latitude != '0.000000') {
+			//Google Maps String
 			$map_string = "$event->location_latitude,$event->location_longitude";
-		}	
+/*			//Open Streetmap String
+			$map_string = "mlat=$event->event_latitude&mlon=$event->event_longitude";*/
+		}
 	}
 	if ( strlen( trim( $map_string ) ) > 5 ) {
 		$map_url = "http://maps.google.com/maps?f=q&amp;z=$zoom&amp;q=to+$map_string";
+//		$map_url = "http://nominatim.openstreetmap.org/search.php?countrycodes=de&q=$map_string&polygon=1";
+		//		$map_url = "http://www.openstreetmap.org/?$map_string&zoom=17";
+
 		if ( $request == 'url' || $source == 'location' ) { return $map_url; }
 		$map_label = stripslashes( ($event->event_label != "")?$event->event_label:$event->event_title);
 		$map = "<a href=\"$map_url\" class='map-link external'>".sprintf(__('Map<span> to %s</span>','my-calendar'),$map_label )."</a>";
@@ -201,6 +225,7 @@ function event_as_array($event,$type='html') {
 			$details_link = '';
 		}
 	$details['details'] = ( get_option( 'mc_uri' ) != '' )?"<a href='$details_link'>$details_label</a>":'';
+	$details['details_2'] = ( get_option( 'mc_uri' ) != '' )?"<a href='$details_link'>$event->event_title</a>":'';
 	$details['dateid'] = $dateid;
 	$details['id'] = $id;
 	// RSS guid
@@ -211,6 +236,8 @@ function event_as_array($event,$type='html') {
 	$ical_description = mc_newline_replace(strip_tags($event->event_desc));
 	$details['ical_description'] = str_replace( "\r", "=0D=0A=", $event->event_desc );	
 	$details['ical_desc'] = $ical_description;
+	$details['event_last_notification'] = $event->event_last_notification;
+
 
 	$details = apply_filters( 'mc_filter_shortcodes',$details,$event );
 

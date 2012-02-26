@@ -258,6 +258,9 @@ jQuery(document).ready(function($) {
 			$is_external = mc_external_link( $event_link );	
 			$link_template = ( isset($templates['link']))?$templates['link']:'{title}';
 			$link_text = jd_draw_template($data,$link_template);
+			if(empty($link_text)) {
+				$link_text = $event_link;
+			}
 			$details = "\n". $header_details . $body_details . $description . $short . $status."<p><a href='$event_link' $is_external>".$link_text.'</a></p>'.$return;
 		} else {
 			$details = "\n". $header_details . $body_details . $description . $short . $status . $return;	
@@ -309,7 +312,14 @@ jQuery(document).ready(function($) {
 		case 'single':$details = apply_filters('mc_event_content_single',$details,$event);
 		break;
 	}
-	
+
+
+/*echo "<pre>";
+echo "hallo";
+
+echo "</pre>";
+*/
+
 	if ( get_option( 'mc_event_approve' ) == 'true' ) {
 		if ( $event->event_approved == 1 ) {	
 		  return $details;

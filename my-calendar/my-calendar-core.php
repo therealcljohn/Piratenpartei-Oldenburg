@@ -845,14 +845,14 @@ function my_calendar_locations_table() {
 // Mail functions by Roland
 function my_calendar_send_email( $details ) {
 $event = event_as_array($details);
-
 	if ( get_option('mc_event_mail') == 'true' ) {	
 		$to = get_option('mc_event_mail_to');
-		$subject = get_option('mc_event_mail_subject');
+		$subject = jd_draw_template( $event, get_option('mc_event_mail_subject'));
 		$message = jd_draw_template( $event, get_option('mc_event_mail_message') );
 		$mail = wp_mail($to, $subject, $message);
 	}
 }
+
 // checks submitted events against akismet, if available, otherwise just returns false 
 function mc_akismet( $event_url='', $description='' ) {
 	global $akismet_api_host, $akismet_api_port, $user;

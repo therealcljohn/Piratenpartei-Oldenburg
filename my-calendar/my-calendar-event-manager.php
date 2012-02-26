@@ -3,6 +3,12 @@ if (!empty($_SERVER['SCRIPT_FILENAME']) && 'my-calendar-event-manager.php' == ba
 	die ('Please do not load this page directly. Thanks!');
 }
 
+//Load wptwitbox plugin
+$wptwitbox_plugin_path = WP_CONTENT_DIR."/plugins/wptwitbox/wptwitbox.php";
+if(file_exists($wptwitbox_plugin_path)) {
+	require_once($wptwitbox_plugin_path);
+}
+
 /* 
 param = event id, date to split around
 return = message confirming successful edits
@@ -327,6 +333,27 @@ global $wpdb,$event_author;
 			$event[0]->event_start_ts = $event_start_ts;
 			my_calendar_send_email( $event[0] );
 			$message = "<div class='updated'><p>". __('Event added. It will now show in your calendar.','my-calendar') . "</p></div>";
+
+			//Call wptwitbox if activated
+			if(!empty($GLOBALS['wpTwitBox'])) {
+				$event_as_array = event_as_array( $event[0] );
+				//Build own details link, because bitly wont build a short url from guid in $event_as_array. Parse guid through urlencode to see why!
+				$id_start 			= date('Y-m-d',strtotime($event_as_array['dtstart']));
+				$mcid 				= 'mc_'.$id_start.'_'.$event_as_array['id'];
+				$details_url = "http://piratenpartei-oldenburg.de/?page_id=544&mc_id=$mcid";
+
+				$short_link = $GLOBALS['wpTwitBox']->get_bitly_link("$details_url");
+
+				$status = "Neuer Termin: $event_as_array[title] am $event_as_array[date] um $event_as_array[time] $short_link";
+
+				$GLOBALS['wpTwitBox']->exe_twitter_call(
+					'statuses/update',
+					'post',
+					array(
+						'status' => "$status"
+					)
+				);
+			}
 		}
 	}
 	if ( $action == 'edit' && $proceed == true ) {

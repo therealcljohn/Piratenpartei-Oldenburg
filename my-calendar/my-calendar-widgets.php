@@ -268,6 +268,7 @@ function my_calendar_upcoming_events($before='default',$after='default',$type='d
         $events = mc_get_all_events($category);		 // grab all events within reasonable proximity
 		$output .= mc_produce_upcoming_events( $events,$template,$before,$after,'list',$order,$skip );
 	}
+
 	if ($output != '') {
 		$output = $header.$output.$footer;
 		return $output;
