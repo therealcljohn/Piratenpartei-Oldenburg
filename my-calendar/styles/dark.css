@@ -1,0 +1,173 @@
+/* A theme in dark grays and blacks with light text and dark blue highlighting. */
+#jd-calendar .event-title {color: #fff;}
+#jd-calendar,#calendar-list {background: #333;color: #fff;}
+#jd-calendar a {color: #9cf;text-decoration: none;}
+#jd-calendar a:hover {text-decoration: underline;color: #fff;}
+#jd-calendar caption, #jd-calendar .my-calendar-date-switcher, 
+#jd-calendar .category-key, #jd-calendar .calendar-event .details, 
+#jd-calendar .calendar-events {background: #222;color: #fff;}
+#jd-calendar .category-key .no-icon {border: 1px solid #bbb;}
+
+#jd-calendar caption, #jd-calendar .my-calendar-date-switcher, #jd-calendar .my-calendar-nav li a:hover, #jd-calendar .category-key {
+border: 1px solid #222;
+}
+#jd-calendar .my-calendar-date-switcher {padding: 4px;margin: 0 0 10px;}
+#jd-calendar .my-calendar-date-switcher input, #jd-calendar .my-calendar-date-switcher label, #jd-calendar .my-calendar-date-switcher select {margin: 0;padding: 0;color: #333;}
+#jd-calendar .my-calendar-date-switcher .button {font-size: .9em;}
+#jd-calendar .list-event .details, #jd-calendar td {border:1px solid #222;}
+#jd-calendar .calendar-event .details, #jd-calendar .calendar-events {background: #444;border: 1px solid #222;color:#fff;}
+#jd-calendar .my-calendar-nav li a, #jd-calendar .calendar-event .details, #jd-calendar .calendar-events  {border:1px solid #444;}
+#jd-calendar .list-event .details, #jd-calendar .day-without-date {background:#252525;color: #eee;}
+#jd-calendar #calendar-list .odd {background:#353535;}
+#jd-calendar .odd .list-event .details {background:#151515; border:1px solid #353535;}
+#jd-calendar .nextmonth, #jd-calendar .nextmonth .weekend {color: #999;}
+#jd-calendar .current-day {background:#224;}
+#jd-calendar .current-day .mc-date {color: #fff;background: #111;}
+#jd-calendar .weekend {background:#555!important;color: #fff!important;}
+#jd-calendar .mc-date {background:#080808; color: #fff;}
+#jd-calendar .my-calendar-nav li a {color: #aaf;background:#000;}
+#jd-calendar .my-calendar-nav li a:hover {color:#fff; border: 1px solid #aaf;}
+#upcoming-events .past-event {color: #aaa; }
+#upcoming-events .today {color: #eee; }
+#upcoming-events .future-event {color: #bbb;}
+#jd-calendar caption {margin: 2px 0;font-weight:700;padding:2px;}
+#jd-calendar table {width:100%;line-height:1.2;border-collapse:collapse;}
+#jd-calendar td {
+vertical-align:top;
+text-align:left;
+width:13%;
+height:70px;
+padding:2px!important;
+}
+.mini td {height: auto!important;}
+#jd-calendar th {text-align: center;padding: 5px 0!important;letter-spacing: 1px;}
+#jd-calendar th abbr {border-bottom: none;}
+#jd-calendar h3 {
+font: 700 .8em Arial, Verdana, sans-serif;
+margin:3px 0;
+padding:0;
+width: 100%;
+color: #fff;
+clear: none;
+line-height: 1;
+text-transform: none;
+letter-spacing: 100%;
+}
+#jd-calendar h2 {color: #fff;}
+#jd-calendar h3 img {vertical-align: middle;margin: 0 3px 0 0!important;}
+#jd-calendar #calendar-list h3 img {vertical-align: middle;}
+#jd-calendar .list-event h3 {font-size:1.2em;margin:0;}
+#jd-calendar .calendar-event .details, #jd-calendar .calendar-events {
+position:absolute;
+left: 15%;
+width:70%;
+padding:5px;
+z-index: 3;
+border: 2px solid #222;
+-moz-box-shadow: 3px 3px 10px #000;
+-webkit-box-shadow: 3px 3px 10px #000;
+box-shadow: 3px 3px 10px #000;
+}
+#jd-calendar .details .close img {
+float: right;
+background: #aaa;
+text-align: center;
+padding: 2px;
+-moz-border-radius: 3px;
+-webkit-border-radius: 3px;
+border-radius: 3px;
+}
+#jd-calendar.mini .details .close {
+position: absolute;
+top: 8px;
+right: 8px;
+}
+#jd-calendar .calendar-events {width: 200px!important;left: 0px;}
+#jd-calendar .list-event .details {margin:5px 0;padding:5px 5px 0;}
+#jd-calendar #calendar-list {margin: 0;padding: 0;}
+#jd-calendar #calendar-list li {padding:5px;list-style-type: none;margin: 0;}
+#jd-calendar .mc-date {display:block;margin:-2px -2px 2px;padding:2px 4px;}
+#jd-calendar th {font-size:.8em;text-transform:uppercase;padding:2px 4px 2px 0;}
+#jd-calendar .category-key {padding: 5px;margin: 5px 0;}
+#jd-calendar .category-key ul {
+list-style-type: none;
+margin: 0;
+padding: 0;
+}
+#jd-calendar .category-key li {margin: 2px 10px;}
+#jd-calendar .category-key span {margin-right:5px;vertical-align:middle;}
+#jd-calendar .category-key .no-icon {
+width: 10px;
+height: 10px;
+display: inline-block;
+}
+#calendar-list li {text-indent:0;margin:0;padding:0;}
+#jd-calendar .calendar-event .event-time, #jd-calendar .list-event .event-time {
+display:block;
+height:100%;
+margin-right:10px;
+margin-bottom:10px;
+font-weight:700;
+font-size:.9em;
+}
+#jd-calendar p {line-height:1.5;margin:0 0 1em;padding:0;}
+#jd-calendar .vcard {font-size:.9em;margin:10px 0;}
+#jd-calendar .calendar-event .vcard {margin:0 0 10px;}
+#jd-calendar {position: relative;}
+#jd-calendar img {border: none;}
+.category-color-sample img {margin-right: 5px;vertical-align: top;}
+#jd-calendar .my-calendar-nav ul {
+height: 2em;
+list-style-type:none;
+margin:0 5px;
+padding:0;
+}
+.mini .my-calendar-nav ul {height: 2em!important;}
+#jd-calendar .my-calendar-nav li {float:left;list-style-type: none;}
+#jd-calendar .my-calendar-nav li:before {content:'';}
+#jd-calendar .my-calendar-nav li a {display:block;text-align:center;padding:1px 20px;}
+.mini .my-calendar-nav li a {padding: 1px 3px!important;font-size: .7em;}
+#jd-calendar .my-calendar-next {margin-left: 4px;text-align:right;}
+#jd-calendar.mini .my-calendar-date-switcher label {
+display: block;
+float: left;
+width: 6em;
+}
+#jd-calendar.mini .my-calendar-date-switcher {padding: 4px;}
+#jd-calendar.mini td .category-icon {display: none;}
+#jd-calendar.mini h3 {font-size: 1.1em;}
+#jd-calendar.mini .day-with-date span, #jd-calendar.mini .day-with-date a {
+font: .9em Arial, Verdana, sans-serif;
+padding:1px;
+color: #fff;
+text-align: center;
+}
+#jd-calendar .mini-event .sub-details {
+margin: 0;
+border-bottom: 1px solid #ccc;
+padding: 2px 0 0;
+margin-bottom: 5px;
+}
+#jd-calendar .mini-event .details img {width: 100%;}
+#jd-calendar.mini .day-with-date a {
+display: block;
+margin: -2px;
+font-weight: 700;
+text-decoration: underline;
+}
+.mini td {height: auto!important;}
+.mini .my-calendar-nav ul {height: 2em!important;}
+.mini .my-calendar-nav li a {padding: 1px 3px!important;font-size: .7em;}
+#jd-calendar .nextmonth {background: #f6f6f6;color: #888;}
+#jd-calendar .nextmonth .event-title {opacity: .7;}
+#jd-calendar .nextmonth .weekend {color: #888;background: #161616!important;}
+#jd-calendar .nextmonth {background: #000;color: #666!important;}
+#jd-calendar .nextmonth .mc-date {background: #161616;}
+#jd-calendar .vcard, #mc_event .vcard {
+font-size: .9em;
+background: #111;
+border: 1px solid #333;
+padding: 10px;
+float: right;
+}
+.screenreader { position: absolute; left: -999em; }

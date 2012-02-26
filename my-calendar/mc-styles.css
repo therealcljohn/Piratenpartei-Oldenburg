@@ -1,0 +1,119 @@
+.jd-my-calendar {margin-right: 180px!important;}
+.templating .jd-my-calendar {margin-right: 290px!important;}
+#my-calendar legend {font-weight: 700;font-size: 1em;}
+#support { float: right; }
+.resources {
+width: 150px; 
+border: 1px solid #aaa;
+padding: 10px;
+margin-left: 10px;
+margin-bottom: 10px; 
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+border-radius: 5px;
+-moz-box-shadow: 2px 2px 10px #ccc;
+-webkit-box-shadow: 2px 2px 10px #ccc;
+box-shadow: 2px 2px 10px #ccc;
+background: #ffb;
+text-align: center;
+}
+.mcbuy {font-size: 1.4em; line-height: 1.4;}
+.templating .resources {width: 250px; float: right; }
+.resources form {margin: 0!important;}	
+#category_icon option {padding: 5px 0 5px 24px;}
+#my-calendar-admin-table .delete {
+background: #a00;
+color: #fff;
+padding: 2px 8px;
+font-size: .8em;
+border: 1px solid #fff;
+-moz-border-radius: 8px;
+-webkit-border-radius: 8px;
+border-radius: 8px;
+text-decoration: none;
+}
+#my-calendar-admin-table .delete:hover, #my-calendar-admin-table .delete:focus {border: 1px solid #999;background: #b11;}
+.import {
+background: #ffa;
+padding: 5px 10px;
+border: 1px solid #aaa;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+border-radius: 5px;
+margin: 15px 0;
+}
+.n4 {width: 42px;}
+
+.category-color {
+width: 1.2em;
+height: 1.2em;
+display: inline-block;
+-moz-border-radius: 3px;
+-webkit-border-radius: 3px;
+border-radius: 3px;
+border: 1px solid #000;
+}
+.jd-my-calendar .postbox h3 {cursor: text;}
+.active-link {font-weight:700;text-decoration: underline;}
+ul.links li {float: left;margin: 0 5px 10px;font-size: .9em;}
+#my_calendar_old_styles {float: right;margin-left: 660px;}
+#toggle {height: 2em;}
+#toggle li {float: left;margin-right: 5px;}
+.spam {background: #ffa;}
+#customstyles li {
+font-size: .9em;
+margin: 5px 0 5px 30px;
+list-style-type: disc;
+}
+.jd-my-calendar legend {position: absolute;left: -999em;}
+.jd-my-calendar fieldset fieldset legend {
+position: static;
+font-weight: 700;
+padding: 5px;
+background: #eee;
+width: 99%;
+}
+.jd-my-calendar fieldset fieldset {margin: 0 0 20px 0;padding-top: 2px;}
+#mceditor {border: 1px solid #ddd;margin: 0 0 5px;}
+#templates dt {
+float: left;
+margin-right: 10px;
+font-weight: 700;
+font-size: 1em;
+width: 9em;
+}
+#templates dd {margin-left: 10em;padding: 2px 1px;}
+.mc_template_tags {
+float: right;
+clear: right;
+width: 270px;
+font-size: .9em;
+}
+.clonedInput {margin-bottom: 10px;border-bottom: 1px solid #ddd;}
+#my-calendar .apply {
+float: right;
+padding: 15px 15px 0;
+border-radius: 5px;
+box-shadow: 2px 2px 3px #aaa;
+background: #ffd;
+width: 200px;
+}
+#my-calendar .apply legend {background: #ffd;padding: 2px 0;}
+#my-calendar .apply .warning {
+background: #ffe;
+color: #a00;
+padding: 3px;
+border: 1px solid #333;
+}
+#my-calendar .break ul {
+padding: 10px 10px 0;
+margin-right: 180px;
+-moz-column-count: 3;
+-moz-column-gap: 20px;
+-webkit-column-count: 3;
+-webkit-column-gap: 20px;
+column-count: 3;
+column-gap: 20px;
+}
+.event_image {float:right;}
+.event_image img {margin-top: 2px;}
