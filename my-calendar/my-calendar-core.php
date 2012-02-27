@@ -899,11 +899,36 @@ $event = event_as_array($details);
 
 	if ( get_option('mc_event_mail') == 'true' ) {	
 		$to = get_option('mc_event_mail_to');
-		$subject = get_option('mc_event_mail_subject');
+		$subject = jd_draw_template( $event, get_option('mc_event_mail_subject'));
 		$message = jd_draw_template( $event, get_option('mc_event_mail_message') );
 		$mail = wp_mail($to, $subject, $message);
 	}
 }
+
+
+function my_calendar_twitter_new_event( $event ) {
+	//Call wptwitbox if activated
+	if(!empty($GLOBALS['wpTwitBox'])) {
+		$event_as_array = event_as_array( $event );
+		//Build own details link, because bitly wont build a short url from guid in $event_as_array. Parse guid through urlencode to see why!
+		$id_start       = date('Y-m-d',strtotime($event_as_array['dtstart']));
+		$mcid         = 'mc_'.$id_start.'_'.$event_as_array['id'];
+
+		$details_url = get_option( 'mc_uri' )."?mc_id=$mcid";
+
+		$short_link = $GLOBALS['wpTwitBox']->get_bitly_link("$details_url");
+		$status = "Neuer Termin: $event_as_array[title] am $event_as_array[date] um $event_as_array[time] $short_link";
+		
+		$GLOBALS['wpTwitBox']->exe_twitter_call(
+			'statuses/update',
+			'post',
+			array(
+				'status' => "$status"
+			)
+		);
+	}
+}
+
 // checks submitted events against akismet, if available, otherwise just returns false 
 function mc_akismet( $event_url='', $description='' ) {
 	global $akismet_api_host, $akismet_api_port, $user;

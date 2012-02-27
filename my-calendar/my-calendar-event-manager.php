@@ -3,6 +3,12 @@ if (!empty($_SERVER['SCRIPT_FILENAME']) && 'my-calendar-event-manager.php' == ba
 	die ('Please do not load this page directly. Thanks!');
 }
 
+//Load wptwitbox plugin if it exists to enable twitter functionality
+$wptwitbox_plugin_path = WP_CONTENT_DIR."/plugins/wptwitbox/wptwitbox.php";
+if(file_exists($wptwitbox_plugin_path)) {
+  require_once($wptwitbox_plugin_path);
+}
+
 /* 
 param = event id, date to split around
 return = message confirming successful edits
@@ -329,6 +335,7 @@ global $wpdb,$event_author;
 			$event = $wpdb->get_results($sql);
 			$event_start_ts = strtotime( $event[0]->event_begin . ' ' . $event[0]->event_time );
 			$event[0]->event_start_ts = $event_start_ts;
+ 			my_calendar_twitter_new_event( $event[0] );
 			my_calendar_send_email( $event[0] );
 			$message = "<div class='updated'><p>". __('Event added. It will now show in your calendar.','my-calendar') . "</p></div>";
 			mc_delete_cache();

@@ -177,6 +177,7 @@ $initial_db = "CREATE TABLE " . my_calendar_table() . " (
  event_fifth_week INT(1) NOT NULL DEFAULT '$event_fifth_week',
  event_image TEXT,
  event_added TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ event_last_notification DATETIME NOT NULL,
  PRIMARY KEY  (event_id),
  KEY event_recur (event_recur)
  ) $charset_collate;";

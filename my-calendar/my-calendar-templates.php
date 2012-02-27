@@ -213,6 +213,7 @@ function event_as_array($event,$type='html') {
 		}
 	$details['details_link'] = ( get_option( 'mc_uri' ) != '' )?$details_link:'';
 	$details['details'] = ( get_option( 'mc_uri' ) != '' )?"<a href='$details_link'>$details_label</a>":'';
+	$details['details_2'] = ( get_option( 'mc_uri' ) != '' )?"<a href='$details_link'>$event->event_title</a>":'';
 	$details['dateid'] = $dateid;
 	$details['id'] = $id;
 	$details['group'] = $event->event_group_id;
@@ -227,6 +228,7 @@ function event_as_array($event,$type='html') {
 	$ical_description = mc_newline_replace(strip_tags($event->event_desc));
 	$details['ical_description'] = str_replace( "\r", "=0D=0A=", $event->event_desc );	
 	$details['ical_desc'] = $ical_description;
+	$details['event_last_notification'] = $event->event_last_notification;
 	$details = apply_filters( 'mc_filter_shortcodes',$details,$event );
 	return $details;
 }
