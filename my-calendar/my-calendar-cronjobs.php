@@ -38,7 +38,7 @@ function twitterRememberNotification() {
 				//Build own details link, because bitly wont build a short url from guid in $event_as_array. Parse guid through urlencode to see why!
 				$id_start 			= date('Y-m-d',strtotime($event_as_array['dtstart']));
 				$mcid 				= 'mc_'.$id_start.'_'.$event_as_array['id'];
-				$details_url = "http://piratenpartei-oldenburg.de/?page_id=544&mc_id=$mcid";
+				$details_url = get_option( 'mc_uri' )."?mc_id=$mcid";
 
 				$short_link = $GLOBALS['wpTwitBox']->get_bitly_link("$details_url");
 
