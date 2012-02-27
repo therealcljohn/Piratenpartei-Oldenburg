@@ -4,6 +4,7 @@
 			<div class="post">
 				<div class="post-head">
 					<div class="post-title"><h3>Alle Einträge in &quot;<?php echo single_cat_title(); ?>&quot;</h3></div>
+					<div class="catdesc" style="color: gray; margin-bottom: 20px;"><?php echo category_description( $category ); ?></div>
 				</div>
 			</div>
 			<?php foreach ($posts as $post) : start_wp(); ?>

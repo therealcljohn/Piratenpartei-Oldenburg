@@ -19,7 +19,7 @@
 				{
 					$value = get_post_meta( $post -> ID, $key, true );
 					$key_class = preg_replace( "/[^a-z0-9]/i", '', $key );
-					echo "<li class=\"post-meta-li $key_class\"><span class=\"post-meta-key $key_class\">$key: </span><span class=\"post-meta-value $key_class\">$value</span></li>\n";
+					//echo "<li class=\"post-meta-li $key_class\"><span class=\"post-meta-key $key_class\">$key: </span><span class=\"post-meta-value $key_class\">$value</span></li>\n";
 				}
 			}
 			echo "</ul>\n";

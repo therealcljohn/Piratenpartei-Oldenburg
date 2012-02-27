@@ -12,6 +12,17 @@ Wichtig: Bitte die Theme-Dateien 1_heimathafen.php, 2_menu.php und 3_footer.php 
 .
 */
 
+#search {
+      position:absolute;
+    top:86px;
+    left:890px;
+}
+
+#searchform input {
+    color:#000;
+}
+
+
 /* Standards */
 * {
 	border:none;
@@ -52,7 +63,7 @@ ul.menu li.collapsed, .sidebar li.widget_pages ul li {
 }
 ul.menu li.expanded {
 	background: #e6eef4 left 7px no-repeat url('images/leaf_menu_expanded.png');
-	padding-bottom: 4px;
+	padding-bottom: 0px;
 }
 ul.menu li a, .sidebar li.widget_pages ul li a {
 	color: black;
@@ -140,9 +151,10 @@ ul.menu li ul.menu li ul.menu, .sidebar li.widget_pages ul li ul li ul {
 /* Toplinks */
 #toplinks {
 	background: url('images/kopfzeile.png');
+	background-repeat:no-repeat;
 	height: 65px;
 	line-height: 50px;
-	padding: 0 0 0 10px;
+	padding: 0 0 0 17px;
 	text-align: left;
 	width: 954px;
 }
@@ -154,7 +166,7 @@ ul.menu li ul.menu li ul.menu, .sidebar li.widget_pages ul li ul li ul {
 	display: inline-block;
 	color: white;
 	font: 13px Arial, Helvetica, sans-serif;
-	min-width: 110px;
+
 	padding: 13px 5px 12px 5px;
 	text-decoration: none;
 	text-transform: uppercase;
@@ -176,8 +188,7 @@ ul.menu li ul.menu li ul.menu, .sidebar li.widget_pages ul li ul li ul {
 }
 .toplinkstext ul.links-menu li {
 	display: inline-block;
-	max-width: 110px;
-	padding: 0 0 0 7px;
+	padding: 0 0 0 0px;
 	text-align: center;
 }
 .toplinkstext ul.links-menu li:hover {
@@ -194,7 +205,7 @@ ul.menu li ul.menu li ul.menu, .sidebar li.widget_pages ul li ul li ul {
 
 #links {
 	float: left;
-	width: 210px;
+	width: 0px;
 	overflow: hidden;
 }
 
@@ -203,7 +214,7 @@ ul.menu li ul.menu li ul.menu, .sidebar li.widget_pages ul li ul li ul {
 	padding-right: 15px;
 	padding-left: 15px;
 	text-align: left;
-	width: 500px;
+	width: 710px;
 	overflow: hidden;
 }
 #rechts {
@@ -300,7 +311,7 @@ ul.menu li ul.menu li ul.menu, .sidebar li.widget_pages ul li ul li ul {
 }
 .post .post-title {
 	color: darkorange;
-	font-size: 22px;
+	font-size: 18px;
 	font-weight: bold;
 	line-height: 125%;
 	letter-spacing: 0.02em;
@@ -319,11 +330,22 @@ ul.menu li ul.menu li ul.menu, .sidebar li.widget_pages ul li ul li ul {
 }
 .post .post-content a {
 	color: black;
-	text-decoration: none;
+	/*text-decoration: none;*/
 }
 .post .post-content a:before {
 	content: url('images/inline-link-before.png');
 }
+
+.post .post-content .wp-caption a:before {
+  content: none;
+}
+
+/*Image standarts*/
+.alignright {float:right; margin:0 0 1em 1em}
+.alignleft {float:left; margin:0 1em 1em 0}
+.aligncenter {display: block; margin-left: auto; margin-right: auto}
+  
+
 .post .post-content a:hover {
 	color: darkorange;
 	text-decoration: underline;
@@ -574,3 +596,5 @@ h3#comments {
 	margin: 5px 0 5px auto;
 	float: right;
 }
+
+#s { border:1px solid #ddd; }
