@@ -57,6 +57,8 @@ function my_calendar_get_event($date,$id,$type='html') {
 	$event->event_start_ts = strtotime( $event->event_begin . ' ' . $event->event_time );
 	if ( $type == 'object' ) { return $event; }
 	if ($event) {
+		//Use the date of the actual event if event is a reoccuring event
+		$event->event_begin="$y-$m-$d";
 		$value = "	<div id='mc_event'>
 			".my_calendar_draw_event( $event,'single',"$y-$m-$d" )."
 		</div>\n";
