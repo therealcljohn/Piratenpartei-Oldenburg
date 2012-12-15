@@ -27,15 +27,17 @@ sort($streets);
 ?>
 
 <h2>Landtagswahlkreis Suche für die Stadt Oldenburg</h2>
+<p>Bitte gib deinen Wohnort an:</p>
+
 <form action="./index.php" method="POST">
 	Straße: 
 	<select name="street">
 		<?php foreach($streets as $street) { ?>
 		<option value="<?php echo $street;?>" <?php if($_POST['street']==$street) echo "selected";?>><?php echo $street;?></option>
 		<?php }?>
-	</select>
-	Hausnummer: <input name="house_number" size="5" value="<?php echo $_POST['house_number']; ?>">
-	Nummernzusatz: <input name="house_number_letter" size="5" value="<?php echo $_POST['house_number_letter']; ?>">
+	</select><br>
+	Hausnummer: <input name="house_number" type="number" size="3" value="<?php if(isset($_POST['house_number'])) echo $_POST['house_number']; ?>"><br>
+	Zusatz: <input name="house_number_letter" size="1" value="<?php if(isset($_POST['house_number_letter'])) echo $_POST['house_number_letter']; ?>">
 	<p><input type="submit" value="Wahlkreis suchen"></p>
 </form>
 
@@ -68,17 +70,19 @@ if(!empty($_POST['street']) AND !empty($_POST['house_number'])) {
 	//Wenn die angegebene Straße nicht gefunden werden konnte
 	echo "<h3>Ergebnis</h3>";
 	if($csvKey==-1) { 
-		echo "Es tut uns leid, die eingegebene Adresse existiert anscheinend nicht. Wohnen Sie nicht in Oldenburg? Sollte dies ein Fehler sein, nehmen Sie bitte Kontakt mit uns per Email unter <a href='mailto:kontakt@piratenpartei-oldenburg.de'>kontakt@piratenpartei-oldenburg.de</a> auf und teilen Sie uns mit welche Daten Sie eingegeben haben. Danke.</p>";
+		echo "Es tut uns leid, die eingegebene Adresse existiert anscheinend nicht. Wohnst du nicht in Oldenburg? Sollte dies ein Fehler sein, nimm bitte Kontakt mit uns per Email unter <a href='mailto:kontakt@piratenpartei-oldenburg.de'>kontakt@piratenpartei-oldenburg.de</a> auf und teile uns mit welche Daten du eingegeben hast. Danke.</p>";
 	} else {
 		foreach($wk2wb as $wk=>$wbs) {
 			if(in_array(floor($csv[$csvKey][8]/100), $wbs)) {
-				echo "Sie wohnen im Landtagswahlkreis <b>".$wk."</b>.";
+				echo "<p>Du wohnst im Landtagswahlkreis <b>".$wk."</b>.<br>Um deinen Direktkandidaten zu unterstützen, fülle bitte folgendes Formular aus und sende es an unseren Vorsitzenden Clemens John, Hamelmannstraße 12, 26129 Oldenburg: <a href='http://piratenpartei-oldenburg.de/data/wahlen/landtagswahl/2013/formblatt_unterstuetzerunterschrift_ltwnds13_wk$wk.pdf'>Formblatt für den Wahlkreis $wk</a></p>";
 /*				echo "<pre>";
 				print_r($csv[$csvKey]);
 				echo "</pre>";*/
 			}
 		}
 	}
+	echo "<p>Zur Website der <a href='https://piratenpartei-oldenburg.de'>Piratenpartei Oldenburg</a></p>";
+
 }
 
 ?>
