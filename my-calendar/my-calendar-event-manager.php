@@ -244,7 +244,10 @@ if ( isset( $_POST['event_action'] ) ) {
 	for ($i=0;$i<$count;$i++) {
 	$mc_output = mc_check_data($action,$_POST, $i);
 		if ($action == 'add' || $action == 'copy' ) {
-			$response = my_calendar_save($action,$mc_output);
+                        if($i==$count-1)
+                            $response = my_calendar_save($action,$mc_output, false, true, true);
+                        else
+                            $response = my_calendar_save($action,$mc_output, false, false, false);
 		} else {
 			if ( isset($_POST['event_instance'] ) && $mc_output[0] == true ) {
 				// mc_split_event creates the other newevents, my_calendar_save creates this one (only if proceed is true)
@@ -308,7 +311,7 @@ if ( get_site_option('mc_multisite') == 2 ) {
 <?php
 } 
 
-function my_calendar_save( $action,$output,$event_id=false ) {
+function my_calendar_save( $action,$output,$event_id=false, $twitter=false, $mail=false ) {
 global $wpdb,$event_author;
 	$proceed = $output[0];
 	$message = '';
@@ -335,8 +338,10 @@ global $wpdb,$event_author;
 			$event = $wpdb->get_results($sql);
 			$event_start_ts = strtotime( $event[0]->event_begin . ' ' . $event[0]->event_time );
 			$event[0]->event_start_ts = $event_start_ts;
- 			my_calendar_twitter_new_event( $event[0] );
-			my_calendar_send_email( $event[0] );
+                        if($twitter)
+                            my_calendar_twitter_new_event( $event[0] );
+                        if($mail)
+                            my_calendar_send_email( $event[0] );
 			$message = "<div class='updated'><p>". __('Event added. It will now show in your calendar.','my-calendar') . "</p></div>";
 			mc_delete_cache();
 		}

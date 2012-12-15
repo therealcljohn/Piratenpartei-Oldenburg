@@ -79,6 +79,7 @@ function my_calendar_draw_event($event, $type="calendar", $process_date) {
 
 	$data = event_as_array($event);	
 	$details = false;
+
 	switch ($type) {
 		case 'mini':
 			$template = $templates['mini'];
@@ -96,7 +97,7 @@ function my_calendar_draw_event($event, $type="calendar", $process_date) {
 			$template = $templates['details'];
 			if ( get_option('mc_use_details_template')==1 ) {
 				$details = jd_draw_template( $data, $template );
-			}		
+			}
 		break;
 		case 'calendar':
 		default:
@@ -159,7 +160,7 @@ jQuery(document).ready(function($) {
 	// need to figure out what this is. I don't remember it, and it isn't being used...
 	//$closure = ( $details === false )?'</div>':"";
 	$dateid = date('Y-m-d',$event->event_start_ts);		
-	
+
 	if ( $details === false ) {
 		// put together address information as vcard
 		if (($display_address == 'true' || $display_map == 'true') ) {
@@ -314,6 +315,9 @@ jQuery(document).ready(function($) {
 	$details .= apply_filters('mc_after_event','',$event);
 	$details .= "</div><!--ends .details--></div>";
 	$details = apply_filters('mc_event_content',$details,$event);
+
+        $my_custom_title = apply_filters('wp_title', '  My Custom Title (tm)  ');
+//        add_filter('wp_title', wp_myplugin_property_title, 100);
 	
 	switch($type) {
 		case 'calendar':$details = apply_filters('mc_event_content_calendar',$details,$event);
@@ -1122,7 +1126,7 @@ global $wp_rewrite;
 	} else {
 		$char = ( $wp_rewrite->using_permalinks() )?'?':'&amp;'; // this doesn't work correctly -- it may *never* need to be &. Consider	
 	}
-return $home.$char.http_build_query($variables, '', '&amp;');
+return $home.$char.http_build_query($variables, '', '&'); //https://ticket.piraten-nds.de/issues/3631
 }
 
 function my_calendar_show_locations($show='list',$datatype='name') {

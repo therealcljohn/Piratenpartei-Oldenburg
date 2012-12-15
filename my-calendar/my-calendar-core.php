@@ -918,7 +918,7 @@ function my_calendar_twitter_new_event( $event ) {
 
 		$short_link = $GLOBALS['wpTwitBox']->get_bitly_link("$details_url");
 		$status = "Neuer Termin: $event_as_array[title] am $event_as_array[date] um $event_as_array[time] $short_link";
-		
+
 		$GLOBALS['wpTwitBox']->exe_twitter_call(
 			'statuses/update',
 			'post',

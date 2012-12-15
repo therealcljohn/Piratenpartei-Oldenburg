@@ -158,7 +158,7 @@ function event_as_array($event,$type='html') {
 	$details['rssdate'] = date( 'D, d M Y H:i:s +0000', strtotime( $event->event_added ) );	
 	$details['date'] = ($event->event_span != 1)?$date:mc_format_date_span( $dates, 'simple', $date );
 	$details['enddate'] = $date_end;
-	$details['daterange'] = ($date == $date_end)?$date:$date." <span>&ndash;</span> ".$date_end;	
+	$details['daterange'] = ($date == $date_end)?$date:$date." - ".$date_end;	
 	$details['cat_id'] = $event->event_category;
 	$details['category'] = stripslashes($event->category_name);
 	$details['title'] = stripcslashes($event->event_title);
@@ -250,7 +250,7 @@ function mc_format_date_span( $dates, $display='simple',$default='' ) {
 		$end = $dates[$last]->event_end . ' ' . $dates[$last]->event_endtime;
 		$begin = date_i18n( get_option('mc_date_format'),strtotime( $begin ));
 		$end = date_i18n( get_option('mc_date_format'),strtotime( $end ));
-		$return = $begin . ' <span>&ndash;</span> ' . $end;	
+		$return = $begin . ' - ' . $end;	
 	} else {
 		$return = "<ul class='multidate'>";
 		foreach ($dates as $date ) {
@@ -259,7 +259,7 @@ function mc_format_date_span( $dates, $display='simple',$default='' ) {
 			$bformat = "<span class='multidate-date'>".date_i18n( get_option('mc_date_format'),strtotime( $begin ) ).'</span> <span class="multidate-time">'.date_i18n( get_option('mc_time_format'), strtotime( $begin ) )."</span>";
 			$endtimeformat = ($date->event_endtime == '00:00:00')?'':' '.get_option('mc_time_format');
 			$eformat = ($date->event_begin != $date->event_end)?get_option('mc_date_format').$endtimeformat:$endtimeformat;
-			$span = ($eformat != '')?" <span>&ndash;</span> <span class='multidate-end'>":'';
+			$span = ($eformat != '')?" - <span class='multidate-end'>":'';
 			$endspan = ($eformat != '')?"</span>":'';
 			$return .= "<li>$bformat".$span.date_i18n( $eformat,strtotime( $end ))."$endspan</li>";
 		}

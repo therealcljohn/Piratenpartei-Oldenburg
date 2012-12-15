@@ -119,6 +119,19 @@ add_action( 'init', 'my_calendar_cronjobs', 200 );
 // Add filters 
 add_filter( 'widget_text', 'do_shortcode', 9 );
 add_filter('plugin_action_links', 'jd_calendar_plugin_action', -10, 2);
+add_filter( 'wp_title', 'wp_myplugin_property_title', 10, 1 );
+
+function wp_myplugin_property_title($title)
+{
+    if(isset($_GET['mc_id'])) {
+                $mc_id = explode("_",$_GET['mc_id']);
+                $id = (int) $mc_id[2];
+                $date = $mc_id[1];
+                $event = my_calendar_get_event( $date, $id, 'object' );
+                return " » ".$event->event_title;
+    } else
+        return $title;
+}
 
 // produce admin support box
 function jd_show_support_box() {
