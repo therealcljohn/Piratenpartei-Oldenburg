@@ -64,20 +64,21 @@
 
   $EXECUTE_PASSWORD = "[EXECUTE_PASSWORD]";
 
+  //Set this to be able to call the script directly by a cronjob (php /var/www/blaaa)
+  $_GET["pwd"]=$EXECUTE_PASSWORD;
+
   $AUTO_REFRESH      = 0;
   $IDENTICA_NICK     = "[IDENTICA_NICK]";
   $IDENTICA_PASSWORD = "[IDENTICA_PASSWORD]";
   $TWITTER_NICK      = "[TWITTER_NICK]";
 
-  /* STOP EDITING HERE IF YOU DO NOT KNOW WHAT YOU ARE DOING */
 
-  //Set this to be able to call the script directly by a cronjob (php /var/www/blaaa)
-  $_GET["pwd"]=$EXECUTE_PASSWORD;
+  /* STOP EDITING HERE IF YOU DO NOT KNOW WHAT YOU ARE DOING */
 
   $DATE_FILE    = dirname(__FILE__) . "/" . $TWITTER_NICK . ".date";
   $IDENTICA_API = "https://identi.ca/api/statuses/update.xml";
   $LOCK_FILE    = dirname(__FILE__) . "/" . $TWITTER_NICK . ".lock";
-  $TWITTER_RSS  = "http://twitter.com/statuses/user_timeline/" . $TWITTER_NICK . ".rss";
+  $TWITTER_RSS  = "https://api.twitter.com/1/statuses/user_timeline.rss?screen_name=" . $TWITTER_NICK;
   $USER_AGENT   = "TCtoICsync 0.1b";
 
   /* STOP EDITING HERE */
