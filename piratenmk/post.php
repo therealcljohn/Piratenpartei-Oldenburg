@@ -28,5 +28,24 @@
 </div>
 <div class="post-footer">
 	<div class="post-comment-link"><div class="comment_left"></div><div class="comment_right"><?php comments_popup_link(__('Keine Kommentare bisher'), __('Kommentare (1)'), __('Kommentare (%)')); ?></div></div>
-	<div class="post-info">Am <?php the_time('d M Y'); ?> in <?php the_category('&amp;');?></div>
+	<div class="post-info" style="width: 70%; text-align: right;">Am <?php the_time('d M Y'); ?> in <?php the_category('&amp;');?><br>
+<?php
+$posttags = get_the_tags();
+if(!empty($posttags) && count($posttags)<2) {
+  echo "Tag: ";
+} elseif (count($posttags)>1) {
+  echo "Tags: ";
+}
+
+$set_seperator = false;
+if ($posttags) {
+  foreach($posttags as $tag) {
+    if($set_seperator)
+      echo ", ";
+    echo "<a href='".get_tag_link($tag->term_id)."'>".$tag->name."</a>";
+    $set_seperator = true;
+  }
+}?>
+
+</div>
 </div>

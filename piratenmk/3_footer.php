@@ -11,29 +11,29 @@
 	<div id="fussmitte">
 		<div id="fussl"><!-- links aussen -->
 <!--			<img src="<?php //bloginfo( 'template_directory' ); ?>/images/wirspeichernnichtsiegel_d.png" alt="Wir speichern nicht!" width="109" height="113"/>-->
-			<center><a rel="license" href="http://creativecommons.org/licenses/by/3.0/de/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/de/88x31.png" /></a><br />
+			<center><a rel="license" href="https://creativecommons.org/licenses/by/3.0/de/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/3.0/de/88x31.png" /></a><br />
 			<center>
-				<a href="http://piratenpartei-oldenburg.de/piwik/">
+				<a href="https://piratenpartei-oldenburg.de/piwik/">
 					<img src="<?php bloginfo('template_url'); ?>/images/logosp.gif" width="109" height="113">
 				</a>
 				<br>
-				<a href="http://piratenpartei-oldenburg.de/piwik/index.php?module=CoreAdminHome&action=optOut&language=de">Wir speichern eine anonymisierte Zugriffstatistik. Diese kannst du hier deaktivieren.</a>
+				<a href="https://piratenpartei-oldenburg.de/piwik/index.php?module=CoreAdminHome&action=optOut&language=de">Wir speichern eine anonymisierte Zugriffstatistik. Diese kannst du hier deaktivieren.</a>
 			</center>
 		</div>
 		<div id="fusslm"><!-- links mittig -->
 			Politik & Programm
 			<ul class="menu">
-				<li class="leaf"><a href="http://wiki.piratenpartei.de/Parteiprogramm" title="Im Piratenwiki mitarbeiten.">Parteiprogramm Deutschland</a></li>
-				<li class="leaf"><a href="http://wiki.piratenpartei.de/NDS:Parteiprogramm" title="Im Piratenwiki mitarbeiten.">Parteiprogramm Niedersachsen</a></li>
-				<li class="leaf"><a href="http://wiki.piratenpartei.de/NDS:Oldenburg/Parteiprogramm" title="Im Piratenwiki mitarbeiten.">Parteiprogramm Oldenburg</a></li>
+				<li class="leaf"><a href="https://wiki.piratenpartei.de/Parteiprogramm" title="Im Piratenwiki mitarbeiten.">Parteiprogramm Deutschland</a></li>
+				<li class="leaf"><a href="https://wiki.piratenpartei.de/NDS:Parteiprogramm" title="Im Piratenwiki mitarbeiten.">Parteiprogramm Niedersachsen</a></li>
+				<li class="leaf"><a href="https://wiki.piratenpartei.de/NDS:Oldenburg/Parteiprogramm" title="Im Piratenwiki mitarbeiten.">Parteiprogramm Oldenburg</a></li>
 			</ul>
 			<br>
 
 			Mitmachen
 			<ul class="menu">
 				<li class="leaf"><a href="https://wiki.piratenpartei.de/Spenden">Spenden</a></li>
-				<li class="leaf"><a href="http://wiki.piratenpartei.de/Treffen">Piraten Treffen</a></li>
-				<li class="leaf"><a href="http://www.piratenpartei-niedersachsen.de/mach-mit/mitglied-werden.html" title="Informationen zur Mitgliedschaft ansehen.">Mitgliedschaft</a></li>
+				<li class="leaf"><a href="https://wiki.piratenpartei.de/Treffen">Piraten Treffen</a></li>
+				<li class="leaf"><a href="https://www.piraten-nds.de/mitglied-werden/" title="Informationen zur Mitgliedschaft ansehen.">Mitgliedschaft</a></li>
 			</ul>
 			<br>
 
@@ -45,12 +45,12 @@
 				<li class="leaf"><a href="http://nordpiraten.net/" title="Überblick über die Piraten im Norden">Nordpiraten</a></li>
 				<li class="leaf"><a href="http://piraten-whv.de/" title="Website der Piratenpartei Wilhelmshaven">Wilhelmshaven</a></li>
 				<li class="leaf"><a href="http://piratenpartei-delmenhorst.de/" title="Website der Piratenpartei Demlenhorst">Demlenhorst</a></li>
-				<li class="leaf"><a href="http://wiki.piratenpartei.de/NDS:Ganderkesee" title="Website der Piraten Ganderkesse">Ganderkesse</a></li>
-				<li class="leaf"><a href="http://wiki.piratenpartei.de/NDS:Nordenham" title="Website der Piraten Nordenham">Nordenham</a></li>
-				<li class="leaf"><a href="http://wiki.piratenpartei.de/NDS:Cuxhaven" title="Website der Piraten Cuxhaven">Cuxhaven</a></li>
-				<li class="leaf"><a href="http://wiki.piratenpartei.de/NDS:Ostfriesland" title="Website der Piraten Ostfriesland">Ostfriesland</a></li>
-				<li class="leaf"><a href="http://wiki.piratenpartei.de/NDS:Cloppenburg" title="Website der Piraten Cloppenburg">Cloppenburg</a></li>
-				<li class="leaf"><a href="http://wiki.piratenpartei.de/NDS:Norden" title="Website der Piraten Norden">Norden</a></li>
+				<li class="leaf"><a href="https://wiki.piratenpartei.de/NDS:Ganderkesee" title="Website der Piraten Ganderkesse">Ganderkesse</a></li>
+				<li class="leaf"><a href="https://wiki.piratenpartei.de/NDS:Nordenham" title="Website der Piraten Nordenham">Nordenham</a></li>
+				<li class="leaf"><a href="https://wiki.piratenpartei.de/NDS:Cuxhaven" title="Website der Piraten Cuxhaven">Cuxhaven</a></li>
+				<li class="leaf"><a href="https://wiki.piratenpartei.de/NDS:Ostfriesland" title="Website der Piraten Ostfriesland">Ostfriesland</a></li>
+				<li class="leaf"><a href="https://wiki.piratenpartei.de/NDS:Cloppenburg" title="Website der Piraten Cloppenburg">Cloppenburg</a></li>
+				<li class="leaf"><a href="https://wiki.piratenpartei.de/NDS:Norden" title="Website der Piraten Norden">Norden</a></li>
 				<li class="leaf"><a href="http://bremen.piratenpartei.de" title="Website der Piratenpartei Bremen">Bremen</a></li>
 				<li class="leaf"><a href="http://www.piraten-bremerhaven.de/" title="Website der Piratenpartei Bremerhaven">Bremerhaven</a></li>
 				<li class="leaf"><a href="http://piraten-osnabrueck.de/" title="Website der Piratenpartei Osnabrück">Osnabrück</a></li>
@@ -93,10 +93,20 @@
 		<!--<a href="/kontakt">Kontakt</a>&nbsp;&#x25cf;--><a href="?page_id=84">Impressum</a><!--&nbsp;&#x25cf;-->
 		<div id="serverinfo">
 			WordPress mit <em>piratenhagen</em> bzw. <em>piratenmk</em> Theme<br/>
-			<a href="http://wiki.piratenpartei.de/images/6/62/We_.jpg">Design</a> von <a href="http://wiki.piratenpartei.de/Benutzer:Seeki">Seeki</a>, umgesetzt von <a href="http://wiki.piratenpartei.de/Benutzer:hatch">hatch</a> und <a href="">Tilli</a> und den <a href="http://piraten-hagen.de/">Piraten Hagen</a>, WordPress Theme von <a href="http://wiki.piratenpartei.de/Benutzer:motorradblogger">motorradblogger</a>, <a href="http://piratenpartei-iserlohn.de">Lenne Piraten</a>.
+			<a href="https://wiki.piratenpartei.de/images/6/62/We_.jpg">Design</a> von <a href="https://wiki.piratenpartei.de/Benutzer:Seeki">Seeki</a>, umgesetzt von <a href="https://wiki.piratenpartei.de/Benutzer:hatch">hatch</a> und <a href="">Tilli</a> und den <a href="http://piraten-hagen.de/">Piraten Hagen</a>, WordPress Theme von <a href="https://wiki.piratenpartei.de/Benutzer:motorradblogger">motorradblogger</a>, <a href="http://piratenpartei-iserlohn.de">Lenne Piraten</a>.
 		</div>
 		<?php wp_footer(); ?>
 	</div>
 </div>
+</div>
+<!--<div style="position: relative; top: 220px; z-index: -10;" id="campaign_url">
+	<script language="JavaScript">
+	if(window.innerWidth<=1200)
+		document.getElementById("campaign_url").style.display="none";
+	</script>
+	<a href="http://www.piraten-nds.de/aktuelles/news/article/unterschriftenformular-fuer-die-landtagswahl.html">
+		<img src="http://piratenpartei-oldenburg.de/data/kampagnen/images/vorlage_ltwnds13_banner_hochkannt_statisch.gif" width="160">
+	</a>
+</div>-->
 </body>
 </html>

@@ -28,28 +28,38 @@ $(document).ready(function() {
 });
 </script>
 
+<script type="text/javascript">
+  function setCookie(c_name,value,exdays) {
+    var exdate=new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+    var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+    document.cookie=c_name + "=" + c_value;
+  }
+</script>
+
 <?php wp_get_archives( 'type=monthly&format=link' ); ?>
 <?php wp_head(); ?>
 </head>
 
 <body id="body">
 <div id="wrap">
+<div style="float: left;">
 	<div id="heimathafen">
 		<?php
 			require( '1_heimathafen.php' );
 		?>
 	</div>
 
-<div id="search">
-<form id="searchform" method="get" action="<?php bloginfo('siteurl')?>/">
-		<input type="text" name="s" id="s" class="textbox" value="Website durchsuchen" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;" />
-		<input id="btnSearch" type="submit" name="submit" value="<?php _e('Go'); ?>" />
-</form>
-</div>
 
 	<div id="oben">
-
+		<div id="search">
+			<form id="searchform" method="get" action="<?php bloginfo('siteurl')?>/">
+					<input type="text" name="s" id="s" class="textbox" value="Website durchsuchen" onfocus="if(this.value==this.defaultValue)this.value='';" onblur="if(this.value=='')this.value=this.defaultValue;" />
+					<input id="btnSearch" type="submit" name="submit" value="<?php _e('Go'); ?>" />
+			</form>
+		</div>
 	</div>
+
 	<div id="toplinks">
 		<div class="toplinkstext" style="padding-top: 4px;">
 <!--			<ul class="links-menu">
@@ -71,48 +81,62 @@ $(document).ready(function() {
 				<?php require( '2_menu.php' ); ?>
 		</div>
 	</div>
-
 	<div id="container">
-<!--		<div style="margin-left: 24px; margin-bottom: 10px;">
-			<h1 style="    color: darkorange;
-    font-size: 22px;
-    font-weight: bold;
-    letter-spacing: 0.02em;
-    line-height: 125%;
-    margin-bottom: 15px;
-    text-decoration: none;">Dein Team für die Kommunalwahl am 11. September 2011:</h1>
-			<div style="
+		<div id="top-box" style="margin-left: 24px; padding-bottom: 10px; display: <?php if($_COOKIE['show-top-box-2']=="0") echo "none"; else echo "block"; ?> ;">
+<!--			<div style="float: left;">
+				<h1 style="	color: darkorange;
+						font-size: 22px;
+						font-weight: bold;
+						letter-spacing: 0.02em;
+						line-height: 125%;
+						margin-bottom: 15px;
+						text-decoration: none;">Sei Pirat und unterstütze deinen Listen- und Direktkandidat:</h1>
+			</div>
+			<div style="text-align: right; margin-right: 40px; padding-top: 8px;">
+				<button onclick="document.getElementById('top-box').style.display = 'none'; setCookie('show-top-box-2', 0, 100);">X</button> 
+			</div>
+			<br style="clear: both;">
+			<p style="margin-bottom: 15px">Am 20. Januar 2013 ist Landtagswahl und da wir noch nicht im Landtag vertreten sind, sammeln wir auch in diesem Jahr wieder Unterstützerunterschriften für unsere Kandidaten, damit diese zur Wahl zugelassen werden.<br>
+Sei Pirat, lade dir das Formular unseres Listenkandidaten Gilbert Oltmanns sowie deines Direktkandidaten herunter und schicke beide Formulare ausgefüllt an unseren Vorsitzenden Clemens John, Hamelmannstraße 12, 26129 Oldenburg. Um das richtige Formular für deinen Direktkandidaten zu finden, kannst du deinen Wahlkreis ganz einfach mit unserer <a href="https://piratenpartei-oldenburg.de/wahlkreisfinder/index.php" target="_blank">Wahlkreissuche</a> herausfinden.</p>
 
-display: block; float: left; margin-right: 10px; overflow:hidden; border: 1px solid #000000; width: 120px;">
-				<img src="http://farm7.static.flickr.com/6144/5927165082_596609599d_m.jpg" width="120px">
-				<p style="text-align: center;">Markus Elsken<br>Wahlbereich 1</p>
+			<a href="http://wahl.piraten-nds.de/2012/08/14/gilbert-oltmanns/">
+				<div style="display: block; float: left; margin-right: 10px; overflow:hidden; border: 0px solid #000000; width: 120px;">
+					<img src="https://piratenpartei-oldenburg.de/cms/wp-content/uploads/2012/09/Gilbert-Oltmanns-768x1024.jpg" width="120px">
+				</div>
+			</a>
+
+			<div style="display: block; float: left; margin-right: 10px; overflow:hidden; border: 0px solid #000000; width: 140px;">
+				<h3>Listenkandidat Gilbert Oltmanns</h3>
+				<p>Listenplatz <b>18</b></p><br>
+				<p>50 Jahre alt, Bank- kaufmann a.D. und stellv. Vors. der Piraten OL.</p><br>
+				<p><a href="http://piratenpartei-oldenburg.de/data/wahlen/landtagswahl/2013/formblatt_unterstuetzerunterschrift_ltwnds13_landesliste.pdf">Formular für die Unterstützerunter-<br>schrift herunterladen</a></p>
 			</div>
 
-			<a href="http://wiki.piratenpartei.de/Benutzer:Medienfloh"><div style="display: block; float: left; margin-right: 10px; overflow:hidden; border: 1px solid #000000; width: 120px;">
-				<img src="http://farm7.static.flickr.com/6145/5927166154_fb1dca55ab_m.jpg" width="120px">
-				<p style="text-align: center;">Florian Schuster<br>Wahlbereich 2</p>
-			</div></a>
-			<div style="display: block; float: left; margin-right: 10px; overflow:hidden; border: 1px solid #000000; width: 120px;">
-				<img src="http://farm7.static.flickr.com/6124/5926602433_86b127f3c8_m.jpg" width="120px">
-				<p style="text-align: center;">Jan-Martin Meyer<br>Wahlbereich 3</p>
+			<a href="http://wiki.piratenpartei.de/Benutzer:HolgerL">
+				<div style="display: block; float: left; margin-right: 10px; overflow:hidden; border: 0px solid #000000; width: 120px;">
+					<img src="http://piratenpartei-oldenburg.de/cms/wp-content/uploads/2012/04/holger-225x300.jpg" width="120px">
+				</div>
+			</a>
+			<div style="display: block; float: left; margin-right: 10px; overflow:hidden; border: 0px solid #000000; width: 140px;">
+				<h3>Direktkandidat Holger Lubitz</h3>
+				<p>Wahlkreis <b>62</b></p><br>
+				<p>41 Jahre alt, Diplom-Informatiker und Pirat seit 2009.</p><br>
+				<p><a href="http://piratenpartei-oldenburg.de/data/wahlen/landtagswahl/2013/formblatt_unterstuetzerunterschrift_ltwnds13_wk62.pdf">Formular für die Unterstützerunter-<br>schrift herunterladen</a></p>
 			</div>
-			<a href="https://wiki.piratenpartei.de/Benutzer:Tverrbjelke"><div style="display: block; float: left; margin-right: 10px; overflow:hidden; border: 1px solid #000000; width: 120px;">
-				<img src="http://farm7.static.flickr.com/6005/5926604619_61dd850d4c_m.jpg" width="120px">
-				<p style="text-align: center;">Andreas Hüwel<br>Wahlbereich 4</p>
-			</div></a>
-			<a href="https://wiki.piratenpartei.de/Benutzer:HolgerL"><div style="display: block; float: left; margin-right: 10px; overflow:hidden; border: 1px solid #000000; width: 120px;">
-				<img src="http://farm7.static.flickr.com/6139/6018147365_7d7b195801_m.jpg" width="120px">
-				<p style="text-align: center;">Holger Lubitz<br>Wahlbereich 5</p>
-			</div></a>
-			<a href="https://wiki.piratenpartei.de/Benutzer:Floh1111"><div style="display: block; float: left; margin-right: 10px; overflow:hidden; border: 1px solid #000000; width: 120px;">
-				<img src="http://farm7.static.flickr.com/6016/5927164498_77fd968cb9_m.jpg" width="120px">
-				<p style="text-align: center;">Clemens John<br>Wahlbereich 6</p>
-			</div></a>
-			<a href="https://wiki.piratenpartei.de/Benutzer:TimNiemeyer"><div style="display: block; overflow:hidden; border: 1px solid #000000; width: 120px;">
-				<img src="http://farm7.static.flickr.com/6017/5927164066_caca008b6d_m.jpg" width="120px">
-				<p style="text-align: center;">Tim Niemeyer<br>Wahlbereich 6</p>
-			</div></a>
-		</div>-->
+
+			<a href="http://wiki.piratenpartei.de/Benutzer:J%C3%B6rg_Kunze">
+				<div style="display: block; float: left; margin-right: 10px; overflow:hidden; border: 0px solid #000000; width: 120px;">
+					<img src="http://piratenpartei-oldenburg.de/cms/wp-content/uploads/2012/04/jörg-225x300.jpg" width="120px">
+				</div>
+			</a>
+			<div style="display: block; float: left; margin-right: 10px; overflow:hidden; border: 0px solid #000000; width: 140px;">
+				<h3>Direktkandidat Jörg-Hendrik Kunze</h3>
+				<p>Wahlkreis <b>63</b></p><br>
+				<p>37 Jahre alt, Diplom Verwaltungs-Betriebswirt und Pirat seit 2009.</p><br>
+				<p><a href="http://piratenpartei-oldenburg.de/data/wahlen/landtagswahl/2013/formblatt_unterstuetzerunterschrift_ltwnds13_wk63.pdf">Formular für die Unterstützerunter-<br>schrift herunterladen</a></p>
+			</div>
+			<br style="clear: both;">-->
+		</div>
 
 		<div id="links">
 			<div id="sidebar_left" class="sidebar">
