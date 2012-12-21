@@ -64,6 +64,7 @@ delete_option('mc_stored_styles');
 delete_option('mc_show_rss');
 delete_option('mc_show_ical');
 delete_option('mc_show_weekends' );
+delete_option('mc_convert');
 delete_option('mc_uri' );
 delete_option('mc_location_control' );
 delete_option('mc_use_mini_template' );
@@ -82,6 +83,17 @@ delete_option( 'mc_week_caption' );
 delete_option( 'mc_show_print' );
 delete_option( 'mc_multisite_show' );
 delete_option( 'mc_mini_uri' );
+delete_option( 'mc_process_shortcodes' );
+delete_option( 'mc_remote' );
+delete_option( 'mc_convert' );
+delete_option( 'mc_day_uri' );
+delete_option( 'mc_draggable' );
+delete_option( 'mc_multisite' );
+delete_option( 'mc_open_day_uri' );
+delete_option( 'mc_open_uri' );
+delete_option( 'mc_show_list_info' );
+delete_option( 'mc_event_link' );
+delete_option( 'mc_default_category' );
 add_option( 'mc_uninstalled','true' );
 }
 ?>

@@ -153,7 +153,7 @@
         //Generate weekday initials row
         var dayNames = $('<tr />').appendTo(thead);
         $.each(String('SMTWTFS').split(''), function(k, v) {
-            $('<td />').addClass('dayName').append(v).appendTo(dayNames);
+            $('<th />').addClass('dayName').append(v).appendTo(dayNames);
         });
         
         return thead;
@@ -243,7 +243,7 @@
         var scrollTo;   //Element to scroll the dropdown box to when shown
         var ul = $('<ul />');
 		var first = $('<li />').append(
-                        $('<a href="javascript:;">No time/All day</a>')
+                        $('<a href="javascript:;">All day</a>')
                         .click(function() {
                             if (options && options.selectTime) {
                                 options.selectTime('');
@@ -415,6 +415,7 @@
             var div;
             var within = false;
             
+			element.attr( "autocomplete", "off" );
             element.bind('focus click', function() {
                 if (div) return;
 

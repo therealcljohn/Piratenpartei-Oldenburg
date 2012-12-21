@@ -1,5 +1,6 @@
 <?php
 function my_calendar_rss() {
+$offset = (60*60*get_option('gmt_offset'));
 // establish template
 if ( isset($_GET['mcat']) ) { $cat_id = (int) $_GET['mcat']; } else { $cat_id = false; }
 	$template = "\n<item>
@@ -9,21 +10,23 @@ if ( isset($_GET['mcat']) ) { $cat_id = (int) $_GET['mcat']; } else { $cat_id = 
 	<dc:creator>{author}</dc:creator>  	
     <description><![CDATA[{rss_description}]]></description>
 	<content:encoded><![CDATA[<div class='vevent'>
-    <h1 class='summary'>{title}</h1>
-    <p class='description'>{description}</p>
-    <p class='dtstart' title='{ical_start}'>Begin: {time} on {date}</p>
-    <p class='dtend' title='{ical_end}'>End: {endtime} on {enddate}</p>	
+    <h1 class='summary'>{rss_title}</h1>
+    <div class='description'>{rss_description}</div>
+    <p class='dtstart' title='{ical_start}'>Begins: {time} on {date}</p>
+    <p class='dtend' title='{ical_end}'>Ends: {endtime} on {enddate}</p>	
 	<p>Recurrance: {recurs}</p>
 	<p>Repetition: {repeats} times</p>
-    <div class='location'>{hcard}</div>
+    <div class='location'>{rss_hcard}</div>
 	{link_title}
     </div>]]></content:encoded>
 	<dc:format xmlns:dc='http://purl.org/dc/elements/1.1/'>text/html</dc:format>
 	<dc:source xmlns:dc='http://purl.org/dc/elements/1.1/'>".home_url()."</dc:source>	
 	{guid}
   </item>\n";
+  if ( get_option( 'mc_use_rss_template' ) == 1 ) { $templates = get_option('mc_templates'); $template = $templates['rss']; }
 // add RSS headers
-$output = '<?xml version="1.0" encoding="'.get_bloginfo('charset').'"?>
+$charset = get_bloginfo('charset');
+$output = '<?xml version="1.0" encoding="'.$charset.'"?>
 <rss version="2.0"
 	xmlns:content="http://purl.org/rss/1.0/modules/content/"
 	xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -48,11 +51,11 @@ $output = '<?xml version="1.0" encoding="'.get_bloginfo('charset').'"?>
 	$groups = array();
 	foreach ( array_keys($events) as $key ) {
 		$event =& $events[$key];	
-		if ( !in_array( $event->event_group_id, $groups ) ) {
+		if ( !in_array( $event->occur_group_id, $groups ) ) {
 			$array = event_as_array($event);
 			$output .= jd_draw_template( $array, $template, 'rss' );
 			if ( $event->event_span == 1 ) {
-				$groups[] = $event->event_group_id;
+				$groups[] = $event->occur_group_id;
 			}		
 		}
 	}
@@ -60,7 +63,31 @@ $output .= '</channel>
 </rss>';
 	header('Content-type: application/rss+xml');
 	header("Pragma: no-cache");
-	header("Expires: 0");	
-echo $output;
+	header("Expires: 0");
+echo mc_strip_to_xml($output);
 }
-?>
+
+// just a double check to try to ensure that the XML feed can be rendered.
+function mc_strip_to_xml($value) {
+    $ret = "";
+    $current;
+    if (empty($value)) {
+        return $ret;
+    }
+
+    $length = strlen($value);
+    for ($i=0; $i < $length; $i++) {
+        $current = ord($value{$i});
+        if (($current == 0x9) ||
+            ($current == 0xA) ||
+            ($current == 0xD) ||
+            (($current >= 0x20) && ($current <= 0xD7FF)) ||
+            (($current >= 0xE000) && ($current <= 0xFFFD)) ||
+            (($current >= 0x10000) && ($current <= 0x10FFFF))) {
+            $ret .= chr($current);
+        } else {
+            $ret .= " ";
+        }
+    }
+    return $ret;
+}

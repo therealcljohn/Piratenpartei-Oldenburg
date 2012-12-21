@@ -6,13 +6,12 @@ if (!empty($_SERVER['SCRIPT_FILENAME']) && 'my-calendar-locations.php' == basena
 
 function my_calendar_manage_locations() {
   global $wpdb;
+	$mcdb = $wpdb;
   // My Calendar must be installed and upgraded before this will work
   check_my_calendar();
 	$formats = array( '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%f', '%f', '%d', '%s' )
-  
-  
 ?>
-<div class="wrap">
+<div class="wrap jd-my-calendar">
 <?php 
 my_calendar_check_db();
 ?>
@@ -38,7 +37,7 @@ my_calendar_check_db();
 		'location_zoom'=>$_POST['location_zoom'],
 		'location_phone'=>$_POST['location_phone']
 		);
-		$results = $wpdb->insert( my_calendar_locations_table(), $add, $formats );
+		$results = $mcdb->insert( my_calendar_locations_table(), $add, $formats );
 	  
 		if ($results) {
 			echo "<div class=\"updated\"><p><strong>".__('Location added successfully','my-calendar')."</strong></p></div>";
@@ -47,7 +46,7 @@ my_calendar_check_db();
 		}
     } else if ( isset($_GET['location_id']) && $_GET['mode'] == 'delete') {
 		$sql = "DELETE FROM " . my_calendar_locations_table() . " WHERE location_id=".(int)($_GET['location_id']);
-		$results = $wpdb->query($sql);
+		$results = $mcdb->query($sql);
 		if ($results) {
 			echo "<div class=\"updated\"><p><strong>".__('Location deleted successfully','my-calendar')."</strong></p></div>";
 		} else {
@@ -75,7 +74,7 @@ my_calendar_check_db();
 		$where = array(
 		'location_id'=>(int) $_POST['location_id']
 		);
-		$results = $wpdb->update( my_calendar_locations_table(), $update, $where, $formats, '%d' );
+		$results = $mcdb->update( my_calendar_locations_table(), $update, $where, $formats, '%d' );
 		if ( $results === false ) {
 			echo "<div class=\"error\"><p><strong>".__('Location could not be edited.','my-calendar')."</strong></p></div>";
 		} else if ( $results == 0 ) {
@@ -95,9 +94,10 @@ my_calendar_check_db();
 
 function mc_show_location_form( $view='add',$curID='' ) {
 global $wpdb;
+	$mcdb = $wpdb;
 	if ($curID != '') {
 		$sql = "SELECT * FROM " . my_calendar_locations_table() . " WHERE location_id=$curID";
-		$cur_loc = $wpdb->get_row($sql);
+		$cur_loc = $mcdb->get_row($sql);
 	}
 ?>
 <?php if ($view == 'add') { ?>
@@ -105,8 +105,10 @@ global $wpdb;
 <?php } else { ?>
 <h2><?php _e('Edit Location','my-calendar'); ?></h2>
 <?php } ?>
-<?php jd_show_support_box(); ?>   
-<div id="poststuff" class="jd-my-calendar">
+<div class="postbox-container" style="width: 70%">
+<div class="metabox-holder">
+
+<div class="ui-sortable meta-box-sortables">   
 <div class="postbox">
 <h3><?php _e('Location Editor','my-calendar'); ?></h3>
 	<div class="inside">	   
@@ -161,6 +163,8 @@ global $wpdb;
 			} else { ?>
 			<input type="text" id="location_state" name="location_state" class="input" size="10" value="<?php if ( !empty( $cur_loc ) ) echo stripslashes(esc_attr($cur_loc->location_state)); ?>" />	
 			<?php } ?>
+			</p>
+			<p>			
 			<label for="location_postcode"><?php _e('Postal Code','my-calendar'); ?></label> 
 			<?php if ( mc_controlled_field( 'postcode' ) ) {
 				if ( !empty( $cur_loc ) ) $cur_label = (stripslashes($cur_loc->location_postcode));			
@@ -168,8 +172,6 @@ global $wpdb;
 			} else { ?>
 			<input type="text" id="location_postcode" name="location_postcode" class="input" size="10" value="<?php if ( !empty( $cur_loc ) ) echo stripslashes(esc_attr($cur_loc->location_postcode)); ?>" />
 			<?php } ?>
-			</p>
-			<p>
 			<label for="location_region"><?php _e('Region','my-calendar'); ?></label> 
 			<?php if ( mc_controlled_field( 'region' ) ) {
 				if ( !empty( $cur_loc ) ) $cur_label = (stripslashes($cur_loc->location_region));			
@@ -186,8 +188,6 @@ global $wpdb;
 			} else { ?>
 			<input type="text" id="location_country" name="location_country" class="input" size="10" value="<?php if ( !empty( $cur_loc ) ) esc_attr_e(stripslashes($cur_loc->location_country)); ?>" />
 			<?php } ?>
-			</p>
-			<p>
 			<label for="location_zoom"><?php _e('Initial Zoom','my-calendar'); ?></label> 
 				<select name="location_zoom" id="location_zoom">
 				<option value="16"<?php if ( !empty( $cur_loc ) && ( $cur_loc->location_zoom == 16 ) ) { echo " selected=\"selected\""; } ?>><?php _e('Neighborhood','my-calendar'); ?></option>
@@ -218,11 +218,24 @@ global $wpdb;
 		</form>
 	</div>
 </div>
+</div>
 <?php if ($view == 'edit') { ?>
 <p><a href="<?php echo admin_url("admin.php?page=my-calendar-locations"); ?>"><?php _e('Add a New Location','my-calendar'); ?> &raquo;</a></p>
 <?php } ?>
-<?php mc_manage_locations(); ?>
+
+	<div class="ui-sortable meta-box-sortables">
+	<div class="postbox">
+	<h3><?php _e('Manage Locations','my-calendar'); ?></h3>
+		<div class="inside">	
+	<?php mc_manage_locations(); ?>
+		</div>
+	</div>
+	</div>
 </div>
+	<?php jd_show_support_box(); ?>
+
+</div>
+
 <?php
 }
 
@@ -259,17 +272,17 @@ function mc_location_controller( $fieldname, $selected ) {
 
 function mc_manage_locations() {
 global $wpdb;
+$mcdb = $wpdb;
 ?>
-    <h2><?php _e('Manage Locations','my-calendar'); ?></h2>
 <?php
     
     // We pull the locations from the database	
-    $locations = $wpdb->get_results("SELECT * FROM " . my_calendar_locations_table() . " ORDER BY location_label ASC");
+    $locations = $mcdb->get_results("SELECT * FROM " . my_calendar_locations_table() . " ORDER BY location_label ASC");
 
  if ( !empty($locations) )
    {
      ?>
-     <table class="widefat page fixed" id="my-calendar-admin-table" summary="Manage Locations Listing">
+     <table class="widefat page fixed" id="my-calendar-admin-table">
        <thead> 
        <tr>
          <th class="manage-column" scope="col"><?php _e('ID','my-calendar') ?></th>
@@ -301,7 +314,7 @@ global $wpdb;
 <p><em>
 <?php _e('Please note: editing or deleting locations stored for re-use will have no effect on any event previously scheduled at that location. The location database exists purely as a shorthand method to enter frequently used locations into event records.','my-calendar'); ?>
 </em></p>
+
   </div>
 <?php
 }
-?>

@@ -1,10 +1,10 @@
-
 === My Calendar ===
 Contributors: joedolson
 Donate link: http://www.joedolson.com/donate.php
-Tags: calendar, dates, times, events, scheduling, event manager
-Requires at least: 2.9.2
-Tested up to: 3.4-alpha
+Tags: calendar, dates, times, events, scheduling, event manager, event calendar
+Requires at least: 3.0.6
+Tested up to: 3.5.0
+License: GPLv2 or later
 Stable tag: trunk
 
 Accessible WordPress event calendar plugin. Show events from multiple calendars on pages, in posts, or in widgets.
@@ -13,52 +13,61 @@ Accessible WordPress event calendar plugin. Show events from multiple calendars 
 
 My Calendar provides event management and numerous methods to display your events. The plug-in can support individual site calendars within WordPress Multi-User, or multiple calendars displayed by categories of or locations for events. 
 
-Basic Features:
+* 	[User's Guide available for purchase](http://www.joedolson.com/articles/my-calendar/users-guide/) with extensive assistance in set up and use.
+*   [Paid plug-in to add front-end event contributions](https://www.joedolson.com/articles/my-calendar/submissions/)
+
+=Basic Features:=
 
 *	Standard calendar grid or list views of events
 * 	Show events in monthly, weekly, or daily view.
 * 	Mini-calendar view for compact displays (as widget or as shortcode)
 *	Widget to show today's events
 *	Widget to show upcoming or past events 
-*	Template tags to control the HTML and information produced in most output areas.
-*	Calendar can be limited to a single category, all categories, or a selection of categories
-* 	Calendar can be limited to events in specific locations
+*	Custom templates for event output
+*	Limit by category/categories
+* 	Limit by location
+* 	Limit by author
 *	Disable default CSS and default JavaScript or display only on specific Pages/Posts
 *	Editable CSS styles and JavaScript behaviors
-*	Recurring events can be scheduled daily, weekly, on weekdays only, biweekly, monthly by date, monthly by day/week and annually.
-*	Individual occurrences of recurring events can be modified individually
-* 	Events can be configured to be added by any level of user; directly to calendar or reserved for administrative approval
-* 	Store and display the following information for each event: title, description, alternate description, event category, URL, start date, start time, end date, end time, registration status (open, closed or irrelevant), event location.
+*	Schedule a wide variety of recurring events.
+*	Individual occurrences of recurring events can be edited individually
+* 	Access to most aspects of My Calendar can be restricted by role. (Adding events, editing events, editing styles, changing settings, etc.)
+* 	Choose which of the following fields you want to enter and display for each event:
+	* title, 
+	* description, 
+	* event image,
+	* alternate description, 
+	* event host,
+	* event category, 
+	* URL, 
+	* registration status (open, closed or irrelevant), 
+	* event location
 * 	Email notification to administrator when events are scheduled or reserved
 *	Location Manager for storing frequently used venues
-*   Import method from Kieran O'Shea's Calendar plugin
-* 	Integrated Help file to guide in use of shortcodes and template tags
-* 	[User's Guide available for purchase](http://www.joedolson.com/articles/my-calendar/users-guide/) with extensive assistance in set up and use.
+*   Fetch events from a remote MySQL database. (Sharing events in a network of sites.)
+*   Import from [Kieran O'Shea's Calendar plugin](http://wordpress.org/extend/plugins/calendar/)
+* 	Integrated Help page to guide in use of shortcodes and template tags
 
-This calendar branched from [Kieran O'Shea's Calendar plugin](http://wordpress.org/extend/plugins/calendar/) in April 2010. You can import any previous scheduled events from Kieran's calendar into My Calendar.
+=Translations=
 
-Languages available:
+Available languages (in order of completeness):
+Japanese, Spanish, Danish, Czech, Hindi, Turkish, Dutch, French, Italian, German, Portuguese, Russian, Swedish, Finnish, Basque, Persian
 
-* American English (Default)
-* French (Frederic Escallier) - to 1.9.8
-* Dutch (Luud Heck) - to 1.8.9
-* Danish ([Jakob Smith](http://www.omkalfatring.dk/)) - to 1.8.9
-* Japanese ([Daisuke Abe](http://www.alter-ego.jp/)) - to 1.8.5
-* Russian ([Alex](http://blog.sotvoril.ru/) - to 1.8.5
-* Turkish (Mehmet Ko&ccedil;ali) - to 1.8.4
-* German (Uwe Jonas) - to 1.7.8
-* Swedish (Efva Nyberg) - to 1.7.8
-* Italian ([Sabir Musta](http://mustaphasabir.altervista.org)) - to 1.7.0
-* Czech ([Jan Rybarik](http://janrybarik.cz)) - to 1.6.3
-* Brazilian Portuguese (Leonardo Kfoury) - to 1.6.0?
+Visit the [My Calendar translations site](http://translate.joedolson.com/projects/my-calendar) to check how complete a translation is.
 
-New or updated translations are always appreciated. The translation files are included in the download.
+Translating my plug-ins is always appreciated. Visit <a href="http://translate.joedolson.com">my translations site</a> to start getting your language into shape!
+
+Translator Credits (in no particular order)*:
+
+[Ale Gonzalez](http://60rpm.tv/i), [Outshine Solutions](http://outshinesolutions.com), [Jakob Smith](http://www.omkalfatring.dk/),, [globus2008](http://wordpress.org/support/profile/globus2008), Frederic Escallier, Luud Heck, Wim Strijbos, [Daisuke Abe](http://www.alter-ego.jp/), [Alex](http://blog.sotvoril.ru/), Mehmet Ko&ccedil;ali, Uwe Jonas, Florian Edelmann, Efva Nyberg, [Sabir Musta](http://mustaphasabir.altervista.org), Massimo Sgobino, Leonardo Kfoury, Alexandre Carvalho, Amir Khalilnejad, [Aurelio De Rosa](http://www.audero.it/), Bayram Dede, Dani Locasati, Dario Nunez, Dirk Ginader, Evren Erten, Fl&aacute;vio Pereira, Francois-Xavier Benard, [Gianni Diurno](http://www.gidibao.net), Giksi, Heinz Ochsner,  Kazuyuki Kumai, Liam Boogar, Maks, Mano, Massimo Sgobino, Mohsen Aghaei, Oscar, [Rashid Niamat](http://niamatmediagroup.nl/), Stefan Wikstrom, Thomas Meyer, Vedar Ozdemir, [Vikas Arora](http://www.wiznicworld.com), [Miriam de Paula](http://wpmidia.com.br), [Miriam de Paula](http://wpmidia.com.br), [HostUCan](http://www.hostucan.com), [Alex Alexandrov](http://www.webhostingrating.com), [Alyona Lompar](http://www.webhostinggeeks.com), [David Gil P&eacute;rez](http://www.sohelet.com), [Burkov Boris](http://chernobog.ru), [Raivo Ratsep](http://raivoratsep.com), [Jibo](http://jibo.ro), [Rasmus Himmelstrup](http://seoanalyst.dk), [kndb](http://blog.layer8.sh/)
+
+* Translators may not have contributed to this plug-in; but have contributed to my [translation repository](http://translate.joedolson.com).
 
 == Installation ==
 
 1. Upload the `/my-calendar/` directory into your WordPress plugins directory.
 
-2. Activate the plugin on your WordPress plugins page
+2. Activate the plugin on your WordPress plugins page 
 
 3. Configure My Calendar using the following pages in the admin panel:
 
@@ -68,12 +77,218 @@ New or updated translations are always appreciated. The translation files are in
    My Calendar -> Settings   
    My Calendar -> Style Editor
    My Calendar -> Behavior Editor
+   My Calendar -> Template Editor
    
 4. Edit or create a page on your blog which includes the shortcode [my_calendar] and visit
    the page you have edited or created. You should see your calendar. Visit My Calendar -> Help for assistance
    with shortcode options or widget configuration.
 
 == Changelog ==
+
+= 2.1.3 =
+
+* Bug fix: My Calendar stripped title elements from singular posts unless an SEO plug-in was installed. 
+
+= 2.1.2 =
+
+* Bug fix: Miscounted number of events in upcoming events view when events were multiple days.
+* Bug fix: My Calendar URL guessing now only selects from published Pages/posts
+* Tweak: Minor change to HTML output in print view
+* Added: Option to display current month or current year using Upcoming Events widget.
+* Added: Filter to display a custom <title> on single event details pages with settings field to configure that title. (Improves SEO)
+* Language updates: Italian, Russian, Basque
+
+= 2.1.1 =
+
+* Bug fix: users without 'Approve Event' ability submitted unapproved events even when event approval was disabled.
+
+= 2.1.0 =
+
+* Miscellaneous filepath fixes for custom icons
+* Fixed filepath issue for custom content directory in loading calendar generator
+* Added templating options to RSS feed event format
+* Added two new template tags: description_stripped and shortdesc_stripped; returns the description fields with HTML removed.
+* Re-organized settings to provide better grouping.
+* Removed jumpbox default setting; jumpbox now only configurable via shortcode.
+* Bug fix: titles missing in list view when open to details link enabled.
+* Bug fix: Multi-day events listed only once in upcoming events lists.
+* Minor stylesheet tweaks.
+
+= 2.0.12 =
+
+* I horribly screwed up the Upcoming Events widget in 2.0.11. Please accept my apologies.
+
+= 2.0.11 =
+
+* Fixed Broken custom stylesheets editing/selection.
+* Added Custom links for widget title links
+* Fixed issue with event links expiring immediately
+* Fixed issue with holiday collisions restricted in Upcoming Events/events only when holiday category is displayed.
+* Added full year output option for iCal downloads.
+* Added setting for calendar heading month formatting.
+* Updated language files: Japanese, Italian, German, Turkish
+
+= 2.0.10 =
+
+* Updated Japanese, Turkish, and Italian translations
+* Bug fix: Upcoming Events list could not be limited to a single author.
+* Bug fix: Un-approved events were being displayed in some public contexts.
+* Bug fix: Problem with RSS feed template elements not rendering in some cases.
+* Bug fix: Upcoming Events removed events inappropriately in certain situations when 'skip on holidays' was checked
+* Bug fix: Updated method for getting current plugin URL.
+* Deprecated support for WordPress versions before 3.0.6.
+
+= 2.0.9 =
+
+* Bug fix: Email notification on event addition to admin did not receive event data.
+* Bug fix: Accidentally eliminated weekend class. Now it's back!
+* Bug fix: Events crossing multiple dates need per-date unique IDs
+* Code change: Some code simplification for current URL and plugin URL references.
+* Updated languages: Portuguese, Dutch, Italian
+
+= 2.0.8 =
+
+* Re-written (simplified) holiday exclusion mechanism.
+* Performance improvements to templating and event processing.
+* Bug fix: Import from Kieran's "Calendar" plug-in was broken.
+* Bug fix: 'nextmonth' class was attached to events in weekly view; not appropriate to view.
+* Bug fix: Deleting single instance deleted entire event series.
+* Added option: number of events per page in admin events list
+
+= 2.0.7 =
+
+* Bug fix: Show list view on mobile devices option did not work.
+* Bug fix: No longer forcing links on titles in list or mini view.
+* Bug fix: All-day events came up with random end times.
+* Change: All-day checkbox added.
+* Change: All-day events automatically forced to hide end times.
+* Change: removed X-WR-CALNAME field from iCal output for improved compatibility
+* Updates: Partial updates to Spanish, Italian, and Dutch translations.
+
+= 2.0.6 =
+
+* Bug fix: Mini calendar links pointed to current display month regardless of current display date.
+* Bug fix: if day parameter was set, the main calendar views showed events for month starting from that date.
+* Bug fix: if day view was targeted from mini calendar with default cid parameter set, would not react 
+* Bug fix: Calendar could not show events which had start and end dates which spanned the displayed period but were not included in the displayed period.
+* Moved screenshots into assets folder in version repository.
+* Translation source updated at http://translate.joedolson.com/ - now the translations need refreshing!
+
+= 2.0.5 =
+
+* Bug fix: Date links were eliminated in mini calendar if option to link to day-view was enabled.
+* Bug fix: Today's events drew events based on UTC instead of current timezone.
+
+= 2.0.4 =
+
+* Bug fix: template variable misassigned in the Today's Events shortcode.
+* Change: Added option to output iCal either in UTC or with times as entered. (Previously only UTC)
+
+= 2.0.3 =
+
+* Bug fix: Upcoming events widget did not support the "show_today's events" option correctly.
+* Bug fix: Was not possible to set 12:00 am as the end time for an event.
+* Bug fix: prevented blank title in main calendar due to faulty template.
+
+= 2.0.2 =
+
+* Bug fix: My Calendar did not enqueue jQuery
+* Bug fix: Grid view did not display last day of month if first day of week and last day of month were both Sunday
+
+= 2.0.1 =
+
+* Bug fix: Error in default settings for event titles.
+* Bug fix: Single Event iCal export broken
+* Bug fix: Today's Events shortcode broken if author not specified
+* Change: Deleting or updating categories now refreshes the cache.
+
+= 2.0.0 =
+
+* Completely re-written database model for events.
+* Added: pagination on event manager list of events.
+* Added: Restrict groups manager lists to currently grouped/ungrouped lists of events.
+* Added links to other event instances visible when editing events with multiple instances.
+* Added default category selection.
+* Added feature: limit calendar views by event author.
+* Added feature: filter event manager view by location, author, or category.
+* Added feature: mark categories as private, to only show those events to logged-in users.
+* Added templating to locations list so user can produce list of any set of location data.
+* Added option in event manager to copy location data into Locations table
+* Added [my_calendar_event] shortcode to fetch information for a single event.
+* Added template tag {timerange} to display start-end times.
+* Change: all events now have an end time. Option to hide end times to maintain current display. 
+* Bug fix: iCal had missing newline; events now return labeled UTC time
+* Bug fix: RSS does better job of clearing non-XML special characters.
+* Bug fix: If preset location was selected, no other edits to locations could be done. 
+* Bug fix: when copying an event, the new event was grouped in the same group as the source event. 
+* Bug fix: if stylesheet was disabled, stylesheet was erased on next save of style settings.
+* Bug fix to category limiting which matched category names like 'baseball' to show 'all' categories.
+
+= 1.11.3 =
+
+* Fatal error in PHP 5.4+ https://bugs.php.net/bug.php?id=54657
+* Bug fix: {date} and {time} template tags not rendered in details link when run in a template.
+* Bug fix: upgrade database button placement off-screen 
+* Bug fix: layout on stylesheet editor caused usability problems
+* Bug fix: added line break in iCal output.
+* Change: added alt attribute to category icons in appropriate contexts.
+* [My Calendar 2.0 beta](http://downloads.wordpress.org/plugin/my-calendar.2.0.0.zip) added to subversion repository. Here there be bugs. 
+
+= 1.11.2 =
+
+* Bug fix: Called wp_editor on versions below 3.3
+* Bug fix: assorted PHP notices cleaned up.
+
+= 1.11.1 =
+
+* HTML validation issue fixed in calendar output.
+* Added option to hide display of external event links in calendar output. 
+* Bug fix: Mini calendar should not toggle from mini view when main view switched.
+* Bug fix: Week time frame of list view did not return the 'no events' message.
+* Feature: No events message can be customized by using an enclosing shortcode: [my_calendar]No events this week![/my_calendar]
+
+= 1.11.0 =
+
+* Added option to use {date} in Today's Events widget title.
+* Events with the same time are now sub-sorted by title in Upcoming Events lists.
+* Template tag {endtime} returns empty string if same as start time
+* Standard event output returns empty string for event end time if same as start time.
+* Can only check 'multi-day event' option if event has multiple occurrences.
+* Categories in editor now sortable by either ID or category name.
+* Categories in input now sorted by category name.
+* Updated mobile detection class.
+* Major revision to permissions handling to use custom capabilities
+* Redesign of settings pages.
+* Can target tablet devices with CSS by adding a stylesheet called mc-tablet.css to your theme directory.
+* Can target other mobile devices with CSS by adding a stylesheet called mc-mobile.css to your theme directory.
+* Template tags now support before and after attributes: {tag before=&quot;&lt;p&gt;&quot; after=&quot;&lt;/p&gt;&quot;}
+* Added option to retrieve events, categories, and locations from a remote database. (e.g., to share calendar information between 3 related sites.)
+* Eliminated details arrow; forcing anchor element on clickable title. 
+* Added 'id' attribute to My Calendar shortcode, to customize unique ID for calendar and avoid non-compliant duplication of IDs
+* Added 'template' attribute to My Calendar shortcode, so specific calendars can use their own individual custom templates. Templates should be text files (.txt) placed in your theme directory.
+* Reduced specificity in stylesheets by eliminating ID-based references.
+* Fixed bug with day/date consistency in 5-day grid calendars.
+* Added day class to date boxes without dates.
+* Jumpbox is now switchable from the shortcode.
+* Fixed google maps link to use the correct directions targeting method
+* Various changes for WP 3.4 compatibility.
+* Updated Danish Translation
+* Updated Czech Translation 
+* Added Hindi Translation
+
+= 1.10.12 =
+
+* Bug fix: List format showed all dates, regardless of whether there were events for that date.
+* Bug fix: List format showed incorrect classes.
+* Bug fix: Pipe separator for categories not supported with caching.
+* ARRRRGGGGHHHH!!! I'm sure you're as frustrated about all these little releases as I am. But who wants to sit on known bugs?
+
+= 1.10.11 =
+
+* Bug fix: Variable not checked for type threw usort warning.
+* Bug fix: Details links rendered incorrect page if linked from a single post location with permalinks not enabled.
+* Bug fix: Fixed bug where calendar returned no information if cache reached max size.
+* Settings change: Caching is now defaulted to off.
 
 = 1.10.10 =
 
@@ -743,7 +958,11 @@ Because the majority of users end up on my web site asking for help anyway -- an
 
 = This plug-in is really complicated. Why can't you personally help me figure out how to use it? =
 
-I can! Just not in person. I've written a User's Guide for My Calendar, which you can [purchase at my web site](https://www.joedolson.com/articles/my-calendar/users-guide/) for $19. This $19 helps defray the hundreds of hours I've spent in developing the plug-in and providing support. Please, consider buying the User's Guide or [making a donation](https://www.joedolson.com/donate.php) before asking for support!
+I can! Just not in person. I've written a User's Guide for My Calendar, which you can [purchase at my web site](https://www.joedolson.com/articles/my-calendar/users-guide/) for $21. ($19 if you're not interested in getting updates.) This helps defray the thousand plus hours I've spent in developing the plug-in and providing support. Please, consider buying the User's Guide or [making a donation](https://www.joedolson.com/donate.php) before asking for support!
+
+= How can visitors to my site submit events? =
+
+I've written a paid plug-in that adds this feature to My Calendar, called My Calendar: Submissions. You can [buy it at my web site](https://www.joedolson.com/articles/my-calendar/submissions/)!
 
 == Screenshots ==
 
@@ -760,7 +979,5 @@ I can! Just not in person. I've written a User's Guide for My Calendar, which yo
 
 == Upgrade Notice ==
 
-- Version 1.10.10 Fixes miscellaneous bugs relating to caching and two validation errors.
-- Version 1.10.2 is a CRITICAL SECURITY UPGRADE. Please upgrade promptly.
-- Version 1.10.0 adds a printable view, multi-day events, and a few additional new options.
-- Version 1.9.0 incorporated many new event editing and management options and a refresh of My Calendar's styles and scripts. Some changes will require updated styles or scripts to work properly. Updated JavaScript and styles <em>will not be installed by default</em>, in order to avoid overwriting any custom changes, but you can update styles and scripts on their editing pages. 
+= 2.0.0 =
+Major database redesign. Some new features, including single event view and pagination in events lists. Database update is non-destructive; no data will be deleted.

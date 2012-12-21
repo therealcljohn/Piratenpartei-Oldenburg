@@ -3,7 +3,7 @@
 	$iswin = preg_match('/:\\\/', dirname(__file__));
 	$slash = ($iswin) ? "\\" : "/";
 	$wp_path = preg_split('/(?=((\\\|\/)wp-content)).*/', dirname(__file__));
-	$wp_path = (isset($wp_path[0]) && $wp_path[0] != "") ? $wp_path[0] : $_SERVER["DOCUMENT_ROOT"];
+	$wp_path = ( isset($wp_path[0]) && $wp_path[0] != "" && $wp_path[0] != dirname(__FILE__) ) ? $wp_path[0] : $_SERVER["DOCUMENT_ROOT"];
 require_once($wp_path . $slash . 'wp-load.php');
 require_once($wp_path . $slash . 'wp-admin' . $slash . 'admin.php'); 
 
@@ -85,6 +85,13 @@ do_action('admin_head');
                         <option value="no" selected="selected"><?php _e('No','my-calendar'); ?></option> 
                     </select> 
 					</p>
+					<p>
+					<label for="showjump"><?php _e('Show Jumpbox', 'my-calendar'); ?></label>
+                    <select name="showjump" id="showjump">
+                        <option value="yes"><?php _e('Yes','my-calendar'); ?></option>
+                        <option value="no" selected="selected"><?php _e('No','my-calendar'); ?></option> 
+                    </select> 
+					</p>					
 					<p>
 					<label for="toggle"><?php _e('Show Format Toggle', 'my-calendar'); ?></label>
                     <select name="toggle" id="toggle">

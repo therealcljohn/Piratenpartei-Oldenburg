@@ -1,11 +1,19 @@
 <?php
 function my_calendar_check_db() {
-global $wpdb;
-$row = $wpdb->get_row( 'SELECT event_id,event_group_id FROM '.my_calendar_table() );
-if ( isset( $_POST['upgrade'] ) && $_POST['upgrade'] == 'true' ) {
-	my_calendar_upgrade_db();
-}
-	if ( !isset( $row->event_group_id ) && isset( $row->event_id ) ) {
+if ( get_option( 'mc_remote' ) == 'true' && function_exists('mc_remote_db') ) { return; }
+	global $wpdb;
+	$mcdb = $wpdb;
+$row = $mcdb->get_row( 'SELECT * FROM '.my_calendar_table() );
+	if ( isset( $_POST['upgrade'] ) && $_POST['upgrade'] == 'true' ) {
+		$upgraded = my_calendar_mc_upgrade_db();
+		?>
+			<div class='upgrade-db updated'>
+			<p>
+			<?php _e('My Calendar Database is updated.','my-calendar'); ?>
+			</p>
+			</div>
+			<?php
+	} else if ( !isset( $row->event_hide_end ) && isset( $row->event_id ) ) {
 		if ( $_GET['page'] == 'my-calendar-config' ) { ?>
 	<div class='upgrade-db error'>
 		<form method="post" action="<?php echo admin_url("admin.php?page=my-calendar-config"); ?>">
@@ -39,24 +47,17 @@ if ( isset( $_POST['upgrade'] ) && $_POST['upgrade'] == 'true' ) {
 		</p>
 		</form>
 	</div><?php
-	} else {
-		if ( isset( $_POST['upgrade'] ) && $_POST['upgrade'] == 'true' ) {
-		?>
-		<div class='upgrade-db updated'>
-		<p>
-		<?php _e('My Calendar Database is updated.','my-calendar'); ?>
-		</p>
-		</div>
-<?php
-		}
 	}
 }
 
-function my_calendar_upgrade_db() {
-global $mc_version,$initial_db,$initial_cat_db, $initial_loc_db;
+function my_calendar_mc_upgrade_db() {
+global $mc_version,$initial_db,$initial_cat_db, $initial_loc_db, $initial_occur_db;
  	require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 	$q_db = dbDelta($initial_db);
 	$cat_db = dbDelta($initial_cat_db);
 	$loc_db = dbDelta($initial_loc_db);	
+	$occ_db = dbDelta($initial_occur_db);
+	mc_migrate_db();
 	update_option('mc_db_version',$mc_version);
+	return true;
 } ?>

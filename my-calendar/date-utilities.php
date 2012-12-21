@@ -4,18 +4,20 @@ function mc_dateclass( $now, $current ) {
 	if ( date("Ymd",$now) == date("Ymd", $current ) ) {
 		$dateclass = 'current-day';
 	} else if ( my_calendar_date_comp( date('Y-m-d',$now), date('Y-m-d',$current) ) ) {
-		$dateclass = 'future-day day-with-date';
+		$dateclass = 'future-day';
 	} else {
-		$dateclass = 'past-day day-with-date';
+		$dateclass = 'past-day past-date'; // stupid legacy classes.
 	}
 	return $dateclass;
 }
 
+// receives: time string, amount to add; returns: timestamp
 function my_calendar_add_date($givendate,$day=0,$mth=0,$yr=0) {
 	$cd = strtotime($givendate);
-	$newdate = date('Y-m-d', mktime(date('h',$cd),date('i',$cd), date('s',$cd), date('m',$cd)+$mth,date('d',$cd)+$day, date('Y',$cd)+$yr));
+	$newdate = mktime(date('H',$cd),date('i',$cd), date('s',$cd), date('m',$cd)+$mth,date('d',$cd)+$day, date('Y',$cd)+$yr);
 	return $newdate;
 }
+//returns true if the date is before or equal,
 function my_calendar_date_comp($early,$late) {
 	$firstdate = strtotime($early);
 	$lastdate = strtotime($late);
@@ -25,7 +27,7 @@ function my_calendar_date_comp($early,$late) {
 		return false;
 	}
 }
-// where the above returns true if the date is before or equal, this one only returns if before
+// true if first date before second date
 function my_calendar_date_xcomp($early,$late) {
 	$firstdate = strtotime($early);
 	$lastdate = strtotime($late);
@@ -35,7 +37,7 @@ function my_calendar_date_xcomp($early,$late) {
 		return false;
 	}
 }
-
+// true if dates are the same
 function my_calendar_date_equal($early,$late) {
 	$firstdate = strtotime($early);
 	$lastdate = strtotime($late);
@@ -48,26 +50,29 @@ function my_calendar_date_equal($early,$late) {
 
 // Function to compare time in event objects
 function my_calendar_time_cmp($a, $b) {
-  if ($a->event_time == $b->event_time) {
-    return 0;
-  }
-  return ($a->event_time < $b->event_time) ? -1 : 1;
+	if ( $a->occur_begin == $b->occur_begin ) {
+		return 0;
+	}
+	return ( $a->occur_begin < $b->occur_begin ) ? -1 : 1;
 }
 
 // Function to compare datetime in event objects
 function my_calendar_datetime_cmp($a, $b) {
-	$event_dt_a = strtotime($a->event_begin .' '. $a->event_time);
-	$event_dt_b = strtotime($b->event_begin .' '. $b->event_time);
-  if ($event_dt_a == $event_dt_b ) {
-    return 0;
-  }
-  return ( $event_dt_a < $event_dt_b ) ? -1 : 1;
+	$event_dt_a = strtotime( $a->occur_begin );
+	$event_dt_b = strtotime( $b->occur_begin );
+	if ( $event_dt_a == $event_dt_b ) {
+	// this should sub-sort by title if date is the same. But it doesn't seem to...
+		$ta = $a->event_title;
+		$tb = $b->event_title;
+		return strcmp( $ta, $tb );
+	}
+	return ( $event_dt_a < $event_dt_b ) ? -1 : 1;
 }
 
 // reverse Function to compare datetime in event objects
 function my_calendar_reverse_datetime_cmp($b, $a) {
-	$event_dt_a = strtotime($a->event_begin .' '. $a->event_time);
-	$event_dt_b = strtotime($b->event_begin .' '. $b->event_time);
+	$event_dt_a = strtotime($a->occur_begin);
+	$event_dt_b = strtotime($b->occur_begin);
   if ($event_dt_a == $event_dt_b ) {
     return 0;
   }
@@ -75,8 +80,8 @@ function my_calendar_reverse_datetime_cmp($b, $a) {
 }
 
 function my_calendar_timediff_cmp($a, $b) {
-	$event_dt_a = strtotime($a->event_begin .' '. $a->event_time);
-	$event_dt_b = strtotime($b->event_begin .' '. $b->event_time);
+	$event_dt_a = strtotime($a->occur_begin);
+	$event_dt_b = strtotime($b->occur_begin);
 	$diff_a = jd_date_diff_precise($event_dt_a);
 	$diff_b = jd_date_diff_precise($event_dt_b);
 	
@@ -171,11 +176,18 @@ function add_days_to_date( $givendate,$day=0 ) {
       return $newdate;
 }
 
+function mc_checkdate($date) {
+	$time = strtotime($date);
+	$m = date('n',$time);
+	$d = date('j',$time);
+	$y = date('Y',$time);
+	return checkdate($m,$d,$y);
+}
+
 function first_day_of_week() {
-	$offset = (60*60*get_option('gmt_offset'));
 	$start_of_week = (get_option('start_of_week')==1||get_option('start_of_week')==0)?get_option('start_of_week'):0;
-	$today = date('w',time()+$offset);
-	$now = date('Y-m-d',time()+$offset);
+	$today = date('w',current_time('timestamp'));
+	$now = date('Y-m-d',current_time('timestamp'));
 	$month = 0; // don't change month
 	switch ($today) {
 		case 1:	$sub = ($start_of_week == 1)?0:1;break; // mon
