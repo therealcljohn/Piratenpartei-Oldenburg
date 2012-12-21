@@ -1,4 +1,11 @@
 <?php
+
+//Load wptwitbox plugin if it exists to enable twitter functionality
+$wptwitbox_plugin_path = WP_CONTENT_DIR."/plugins/wptwitbox/wptwitbox.php";
+if(file_exists($wptwitbox_plugin_path)) {
+  require_once($wptwitbox_plugin_path);
+}
+
 /*
 Note:
             $qst = get_permalink($post->ID);
@@ -1104,11 +1111,31 @@ $event = event_as_array($details);
 
 	if ( get_option('mc_event_mail') == 'true' ) {	
 		$to = get_option('mc_event_mail_to');
-		$subject = get_option('mc_event_mail_subject');
+		$subject = jd_draw_template( $event, get_option('mc_event_mail_subject'));
 		$message = jd_draw_template( $event, get_option('mc_event_mail_message') );
 		$mail = wp_mail($to, $subject, $message);
 	}
 }
+
+function my_calendar_twitter_new_event( $event ) {
+        //Call wptwitbox if activated
+        if(!empty($GLOBALS['wpTwitBox'])) {
+                $event_as_array = event_as_array( $event );
+                $details_url = get_option( 'mc_uri' )."?mc_id=$event_as_array[dateid]";
+
+                $short_link = $GLOBALS['wpTwitBox']->get_bitly_link("$details_url");
+                $status = "Neuer Termin: $event_as_array[title] am $event_as_array[datespan] $short_link";
+
+                $GLOBALS['wpTwitBox']->exe_twitter_call(
+                        'statuses/update',
+                        'post',
+                        array(
+                                'status' => "$status"
+                        )
+                );
+        }
+}
+
 // checks submitted events against akismet, if available, otherwise just returns false 
 function mc_akismet( $event_url='', $description='' ) {
 	global $akismet_api_host, $akismet_api_port, $user;

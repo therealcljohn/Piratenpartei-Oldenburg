@@ -71,6 +71,7 @@ include(dirname(__FILE__).'/my-calendar-detect-mobile.php' );
 include(dirname(__FILE__).'/my-calendar-templating.php' );
 include(dirname(__FILE__).'/my-calendar-group-manager.php' );
 include(dirname(__FILE__).'/my-calendar-export.php' );
+include(dirname(__FILE__).'/my-calendar-cronjobs.php' );
  
 // Install on activation
 register_activation_hook( __FILE__, 'check_my_calendar' );
@@ -103,6 +104,7 @@ add_action( 'wp_footer','mc_footer_js' );
 add_action( 'wp_head','my_calendar_fouc' );
 add_action( 'wp_enqueue_scripts','mc_enqueue' );
 add_action( 'init', 'my_calendar_export_vcal', 200 );
+add_action( 'init', 'my_calendar_cronjobs', 200 );
 // Add filters 
 add_filter( 'widget_text', 'do_shortcode', 9 );
 add_filter('plugin_action_links', 'jd_calendar_plugin_action', -10, 2);

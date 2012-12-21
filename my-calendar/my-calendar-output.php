@@ -1177,7 +1177,7 @@ $home = '';
 	} else {
 		$char = ( $wp_rewrite->using_permalinks() )?'?':'&amp;'; // this doesn't work -- may *never* need to be &. Consider	
 	}
-return $home.$char.http_build_query($variables, '', '&amp;');
+return $home.$char.http_build_query($variables, '', '&');
 }
 
 function my_calendar_show_locations($show='list',$datatype='name',$template='') {

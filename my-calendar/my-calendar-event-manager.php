@@ -185,7 +185,10 @@ if ( isset( $_POST['event_action'] ) ) {
 	for ($i=0;$i<$count;$i++) {
 	$mc_output = mc_check_data($action,$_POST, $i);
 		if ($action == 'add' || $action == 'copy' ) {
-			$response = my_calendar_save($action,$mc_output);
+                        if($i==$count-1)
+                            $response = my_calendar_save($action,$mc_output, false, true, true);
+                        else
+                            $response = my_calendar_save($action,$mc_output, false, false, false);
 		} else {
 			$response = my_calendar_save($action,$mc_output,(int) $_POST['event_id']);		
 		}
@@ -239,7 +242,7 @@ if ( get_site_option('mc_multisite') == 2 ) {
 		<?php
 } 
 
-function my_calendar_save( $action,$output,$event_id=false ) {
+function my_calendar_save( $action,$output,$event_id=false, $twitter=false, $mail=false ) {
 
 global $wpdb,$event_author;
 	$mcdb = $wpdb;
@@ -266,10 +269,14 @@ global $wpdb,$event_author;
 			// do an action using the $action and processed event data
 			do_action( 'mc_save_event', $action, $add );				
 			// Call mail function
-			if ( get_option('mc_event_mail') == 'true' ) {				
-				$event = mc_get_event( $mcdb->insert_id ); // insert_id is last occurrence inserted in the db
-				my_calendar_send_email( $event );
-			}
+
+			$event = mc_get_event( $mcdb->insert_id ); // insert_id is last occurrence inserted in the db
+
+                        if($twitter)
+                            my_calendar_twitter_new_event( $event );
+                        if(get_option('mc_event_mail') == 'true' && $mail)
+                            my_calendar_send_email( $event );
+
 			if ( $add['event_approved'] == 0 ) {
 				$message = "<div class='updated notice'><p>".__('Event saved. An administrator will review and approve your event.','my-calendar')."</p></div>";
 			} else {

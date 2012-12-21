@@ -6,8 +6,8 @@ $y = ( isset($_GET['yr']) )?$_GET['yr']:date('Y');
 $m = ( isset($_GET['month']) )?$_GET['month']:date('n');
 
 if ( $p ) {
-	$from = "$y-1-1";
-	$to = "$y-12-31";
+	$from = date( 'Y-m-t',time() );
+        $to = date( 'Y-m-t',time()+31536000 );
 } else {
 	$d = date( 't',mktime( 0,0,0,$m,1,$y ) );
 	$from = "$y-$m-1";
